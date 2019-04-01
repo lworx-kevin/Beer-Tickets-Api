@@ -1,0 +1,5 @@
+.vs/
+BeerTickets.API/bin/
+BeerTickets.API/obj/Debug/Issuance.API.csprojAssemblyReference.cache
+BeerTickets.API/obj/
+packages/
