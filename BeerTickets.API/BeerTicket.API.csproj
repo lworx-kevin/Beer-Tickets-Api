@@ -181,7 +181,7 @@
     <Compile Include="BusinessLayer\Cryption.cs" />
     <Compile Include="BusinessLayer\IssuanceManager.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\IssuanceController.cs" />
+    <Compile Include="Controllers\BeertixapiController.cs" />
     <Compile Include="DataModel\ApiUser.cs">
       <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
     </Compile>
@@ -279,6 +279,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\V12\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

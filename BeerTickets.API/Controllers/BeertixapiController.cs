@@ -1,15 +1,16 @@
 ﻿using BeerTicket.API.Models;
 using Issuance.API.DataModel;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
+using System.Web;
+using System.Web.Mvc;
 
-namespace BeerTicket.API.Controllers
+namespace Issuance.API.Controllers
 {
-    //http://domain.com/api/v1.2/issuance
-    [RoutePrefix("api/v12/issuance")]
-    public class IssuanceController : ApiController
+    [RoutePrefix("Beertixapi/v1.2")]
+    public class BeerTixApiController : Controller
     {
-        [Route("authenticate")]
         [HttpPost]
         public object Authenticate(ApiUsersViewModel apiUsersViewModel)
         {
@@ -27,11 +28,18 @@ namespace BeerTicket.API.Controllers
             };
         }
 
-        [Route("authenticate")]
-        [HttpGet]
-        public string Authenticate()
+        [Route("issuance")]
+        [HttpPost]
+        public string Issuance(string action)
         {
-            return "Ok";
+            if (action == "authenticate")
+            {
+                return "Ok";
+            }
+            else
+            {
+                return "Invalid Action";
+            }
         }
     }
 }
