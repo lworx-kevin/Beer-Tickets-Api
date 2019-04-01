@@ -6,7 +6,7 @@ using System.Web.Http;
 namespace BeerTicket.API.Controllers
 {
     //http://domain.com/api/v1.2/issuance
-    [RoutePrefix("api/v1.2/issuance")]
+    [RoutePrefix("api/v12/issuance")]
     public class IssuanceController : ApiController
     {
         [Route("authenticate")]
