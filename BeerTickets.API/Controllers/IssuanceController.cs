@@ -26,5 +26,12 @@ namespace BeerTicket.API.Controllers
 
             };
         }
+
+        [Route("authenticate")]
+        [HttpGet]
+        public string Authenticate()
+        {
+            return "Ok";
+        }
     }
 }
