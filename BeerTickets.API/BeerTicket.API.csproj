@@ -51,6 +51,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.WebApi.Versioning, Version=3.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Versioning.3.0.1\lib\net45\Microsoft.AspNet.WebApi.Versioning.dll</HintPath>
     </Reference>
@@ -182,7 +185,124 @@
     <Compile Include="BusinessLayer\IssuanceManager.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IssuanceController.cs" />
+    <Compile Include="DataModel\APIActionLog.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\APIAuthStatu.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataModel\ApiUser.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\API_Auth.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\API_UploadStatus.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\AspNetRole.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\AspNetUser.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\AspNetUserClaim.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\AspNetUserLogin.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\AuthLog.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\BlackOutDate.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\CardInfo.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\CertificateMaster.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\CertificateMasterBckup.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\CertificateTable.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\certificate_request.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\cheque_request.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\CouponBrand.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\CouponCategory.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\CouponFunding.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\CouponGeneration.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\CouponProduct.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\CouponProductType.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\CouponType.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\CouponValue.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\creditcard_request.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\crm_pages.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\GenerateToken.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\invoice_request.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\log.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\other_request.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\PaymentAPIActionLog.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\PaymentAPIAuthStatu.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\PaymentAuthLog.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\portal_functions.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\portal_modules.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\portal_role_function_access.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\portal_userpanel_admin.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\portal_userpanel_APIUsers.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\portal_userpanel_roles.cs">
       <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataModel\SunwingVouchersDataModel.Context.cs">
@@ -200,10 +320,80 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SunwingVouchersDataModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\token_generate.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\token_request.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\transaction_agency.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\transaction_agent.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\transaction_car.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\transaction_cruise.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\transaction_error_log.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\transaction_excursion.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\transaction_hotel.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\transaction_inbound.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\transaction_master.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\transaction_outbound.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\transaction_passenger.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\transaction_pnr.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\transaction_shipping.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\Transaction_Update.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\VoucherCampaign.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\VoucherGeneration.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\VoucherMaster.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\VoucherMasterBckup.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\VoucherTable.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\voucher_request.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\BeerTicketConfigurationManager.cs" />
+    <Compile Include="Helper\EmailService.cs" />
     <Compile Include="Models\ApiUsersViewModel.cs" />
+    <Compile Include="Models\PayLoad.cs" />
+    <Compile Include="Models\VoucherViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -212,6 +402,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Template\voucherEmail.html" />
     <Content Include="DataModel\SunwingVouchersDataModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>SunwingVouchersDataModel.edmx</DependentUpon>

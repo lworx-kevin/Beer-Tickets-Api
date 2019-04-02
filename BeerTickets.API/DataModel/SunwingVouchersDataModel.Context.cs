@@ -26,5 +26,66 @@ namespace Issuance.API.DataModel
         }
     
         public virtual DbSet<ApiUser> ApiUsers { get; set; }
+        public virtual DbSet<API_UploadStatus> API_UploadStatus { get; set; }
+        public virtual DbSet<APIActionLog> APIActionLogs { get; set; }
+        public virtual DbSet<APIAuthStatu> APIAuthStatus { get; set; }
+        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<AuthLog> AuthLogs { get; set; }
+        public virtual DbSet<BlackOutDate> BlackOutDates { get; set; }
+        public virtual DbSet<CardInfo> CardInfoes { get; set; }
+        public virtual DbSet<CertificateMaster> CertificateMasters { get; set; }
+        public virtual DbSet<certificate_request> certificate_request { get; set; }
+        public virtual DbSet<cheque_request> cheque_request { get; set; }
+        public virtual DbSet<CouponBrand> CouponBrands { get; set; }
+        public virtual DbSet<CouponCategory> CouponCategories { get; set; }
+        public virtual DbSet<CouponFunding> CouponFundings { get; set; }
+        public virtual DbSet<CouponGeneration> CouponGenerations { get; set; }
+        public virtual DbSet<CouponProduct> CouponProducts { get; set; }
+        public virtual DbSet<CouponProductType> CouponProductTypes { get; set; }
+        public virtual DbSet<CouponType> CouponTypes { get; set; }
+        public virtual DbSet<CouponValue> CouponValues { get; set; }
+        public virtual DbSet<creditcard_request> creditcard_request { get; set; }
+        public virtual DbSet<GenerateToken> GenerateTokens { get; set; }
+        public virtual DbSet<invoice_request> invoice_request { get; set; }
+        public virtual DbSet<log> logs { get; set; }
+        public virtual DbSet<other_request> other_request { get; set; }
+        public virtual DbSet<PaymentAPIActionLog> PaymentAPIActionLogs { get; set; }
+        public virtual DbSet<PaymentAPIAuthStatu> PaymentAPIAuthStatus { get; set; }
+        public virtual DbSet<PaymentAuthLog> PaymentAuthLogs { get; set; }
+        public virtual DbSet<portal_userpanel_admin> portal_userpanel_admin { get; set; }
+        public virtual DbSet<portal_userpanel_roles> portal_userpanel_roles { get; set; }
+        public virtual DbSet<token_generate> token_generate { get; set; }
+        public virtual DbSet<token_request> token_request { get; set; }
+        public virtual DbSet<transaction_agency> transaction_agency { get; set; }
+        public virtual DbSet<transaction_agent> transaction_agent { get; set; }
+        public virtual DbSet<transaction_car> transaction_car { get; set; }
+        public virtual DbSet<transaction_cruise> transaction_cruise { get; set; }
+        public virtual DbSet<transaction_error_log> transaction_error_log { get; set; }
+        public virtual DbSet<transaction_excursion> transaction_excursion { get; set; }
+        public virtual DbSet<transaction_hotel> transaction_hotel { get; set; }
+        public virtual DbSet<transaction_inbound> transaction_inbound { get; set; }
+        public virtual DbSet<transaction_master> transaction_master { get; set; }
+        public virtual DbSet<transaction_outbound> transaction_outbound { get; set; }
+        public virtual DbSet<transaction_passenger> transaction_passenger { get; set; }
+        public virtual DbSet<transaction_pnr> transaction_pnr { get; set; }
+        public virtual DbSet<transaction_shipping> transaction_shipping { get; set; }
+        public virtual DbSet<Transaction_Update> Transaction_Update { get; set; }
+        public virtual DbSet<VoucherCampaign> VoucherCampaigns { get; set; }
+        public virtual DbSet<VoucherGeneration> VoucherGenerations { get; set; }
+        public virtual DbSet<VoucherMaster> VoucherMasters { get; set; }
+        public virtual DbSet<voucher_request> voucher_request { get; set; }
+        public virtual DbSet<API_Auth> API_Auth { get; set; }
+        public virtual DbSet<CertificateMasterBckup> CertificateMasterBckups { get; set; }
+        public virtual DbSet<CertificateTable> CertificateTables { get; set; }
+        public virtual DbSet<crm_pages> crm_pages { get; set; }
+        public virtual DbSet<portal_functions> portal_functions { get; set; }
+        public virtual DbSet<portal_modules> portal_modules { get; set; }
+        public virtual DbSet<portal_role_function_access> portal_role_function_access { get; set; }
+        public virtual DbSet<portal_userpanel_APIUsers> portal_userpanel_APIUsers { get; set; }
+        public virtual DbSet<VoucherMasterBckup> VoucherMasterBckups { get; set; }
+        public virtual DbSet<VoucherTable> VoucherTables { get; set; }
     }
 }

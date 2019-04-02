@@ -6,6 +6,74 @@
     <edmx:Diagrams>
       <Diagram DiagramId="1ca9fb8e68af405ea7ca5ef3c8ff817d" Name="Diagram1">
         <EntityTypeShape EntityType="sunwingVouchersModel.ApiUser" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.API_UploadStatus" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.APIActionLog" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.APIAuthStatu" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.AspNetRole" Width="1.5" PointX="5.75" PointY="9.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.AspNetUserClaim" Width="1.5" PointX="10.25" PointY="10.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.AspNetUserLogin" Width="1.5" PointX="10.25" PointY="8.25" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.AspNetUser" Width="1.5" PointX="8" PointY="8.125" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.AuthLog" Width="1.5" PointX="8.75" PointY="3.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.BlackOutDate" Width="1.5" PointX="10.75" PointY="0.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.CardInfo" Width="1.5" PointX="0.75" PointY="10.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.CertificateMaster" Width="1.5" PointX="12.75" PointY="0.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.certificate_request" Width="1.5" PointX="12.75" PointY="6.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.cheque_request" Width="1.5" PointX="12.75" PointY="10.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.CouponBrand" Width="1.5" PointX="3.75" PointY="2.875" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.CouponCategory" Width="1.5" PointX="3.75" PointY="7.5" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.CouponFunding" Width="1.5" PointX="3.75" PointY="14.125" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.CouponGeneration" Width="1.5" PointX="5.75" PointY="13.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.CouponProduct" Width="1.5" PointX="7.75" PointY="13.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.CouponProductType" Width="1.5" PointX="9.75" PointY="13.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.CouponType" Width="1.5" PointX="3.75" PointY="11" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.CouponValue" Width="1.5" PointX="11.75" PointY="13.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.creditcard_request" Width="1.5" PointX="13.75" PointY="13.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.GenerateToken" Width="1.5" PointX="14.75" PointY="0.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.invoice_request" Width="1.5" PointX="0.75" PointY="14.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.log" Width="1.5" PointX="14.75" PointY="3.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.other_request" Width="1.5" PointX="14.75" PointY="6.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.PaymentAPIActionLog" Width="1.5" PointX="14.75" PointY="10.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.PaymentAPIAuthStatu" Width="1.5" PointX="15.75" PointY="13.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.PaymentAuthLog" Width="1.5" PointX="16.75" PointY="0.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.portal_userpanel_admin" Width="1.5" PointX="16.75" PointY="3.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.portal_userpanel_roles" Width="1.5" PointX="16.75" PointY="7.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.token_generate" Width="1.5" PointX="16.75" PointY="10.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.token_request" Width="1.5" PointX="15.75" PointY="16.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.transaction_agency" Width="1.5" PointX="0.75" PointY="17.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.transaction_agent" Width="1.5" PointX="2.75" PointY="17.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.transaction_car" Width="1.5" PointX="17.75" PointY="13.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.transaction_cruise" Width="1.5" PointX="18.75" PointY="0.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.transaction_error_log" Width="1.5" PointX="18.75" PointY="4.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.transaction_excursion" Width="1.5" PointX="4.75" PointY="18.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.transaction_hotel" Width="1.5" PointX="6.75" PointY="18.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.transaction_inbound" Width="1.5" PointX="18.75" PointY="7.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.transaction_master" Width="1.5" PointX="8.75" PointY="19.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.transaction_outbound" Width="1.5" PointX="10.75" PointY="19.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.transaction_passenger" Width="1.5" PointX="19.75" PointY="11.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.transaction_pnr" Width="1.5" PointX="19.75" PointY="16.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.transaction_shipping" Width="1.5" PointX="20.75" PointY="0.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.Transaction_Update" Width="1.5" PointX="17.75" PointY="20.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.VoucherCampaign" Width="1.5" PointX="6" PointY="1.125" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.VoucherGeneration" Width="1.5" PointX="20.75" PointY="5.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.VoucherMaster" Width="1.5" PointX="19.75" PointY="20.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.voucher_request" Width="1.5" PointX="21.75" PointY="10.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.API_Auth" Width="1.5" PointX="21.75" PointY="14.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.CertificateMasterBckup" Width="1.5" PointX="21.75" PointY="17.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.CertificateTable" Width="1.5" PointX="22.75" PointY="0.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.crm_pages" Width="1.5" PointX="0.75" PointY="22.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.portal_functions" Width="1.5" PointX="2.75" PointY="22.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.portal_modules" Width="1.5" PointX="22.75" PointY="3.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.portal_role_function_access" Width="1.5" PointX="22.75" PointY="6.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.portal_userpanel_APIUsers" Width="1.5" PointX="12.75" PointY="22.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.VoucherMasterBckup" Width="1.5" PointX="14.75" PointY="22.75" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.VoucherTable" Width="1.5" PointX="8.75" PointY="23.75" />
+        <AssociationConnector Association="sunwingVouchersModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="sunwingVouchersModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="sunwingVouchersModel.FK_portal_VoucherCampaign_portal_CouponBrand" />
+        <AssociationConnector Association="sunwingVouchersModel.FK_portal_VoucherCampaign_portal_CouponCategory" />
+        <AssociationConnector Association="sunwingVouchersModel.FK_portal_VoucherCampaign_portal_CouponFunding" />
+        <AssociationConnector Association="sunwingVouchersModel.FK_portal_VoucherCampaign_portal_CouponTypes" />
+        <AssociationConnector Association="sunwingVouchersModel.AspNetUserRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
