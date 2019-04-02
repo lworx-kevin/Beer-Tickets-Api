@@ -183,6 +183,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="BusinessLayer\Cryption.cs" />
     <Compile Include="BusinessLayer\IssuanceManager.cs" />
+    <Compile Include="Controllers\BeertixapiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IssuanceController.cs" />
     <Compile Include="DataModel\APIActionLog.cs">
