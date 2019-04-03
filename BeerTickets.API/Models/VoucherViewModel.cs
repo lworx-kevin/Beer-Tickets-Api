@@ -2,11 +2,9 @@
 
 namespace Issuance.API.Models
 {
-    public class VoucherViewModel
+    public class VoucherViewModel : PayLoad
     {
-
         public int Id { get; set; }
-        public  int CampaignId { get; set; }
         public string VoucherId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -32,7 +30,6 @@ namespace Issuance.API.Models
         public Nullable<decimal> VoucherValue { get; set; }
         public string Generation_Id { get; set; }
         public string FullName { get; set; }
-
 
     }
 }

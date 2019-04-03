@@ -119,15 +119,6 @@ warning 6002: The table/view 'sunwingVouchers.dbo.API_Auth' does not have a prim
           <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'sunwingVouchers.dbo.audit' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="audit">
-          <Property Name="timestamp" Type="datetime" />
-          <Property Name="user" Type="int" />
-          <Property Name="function" Type="varchar" MaxLength="50" />
-          <Property Name="text" Type="ntext" />
-          <Property Name="Status" Type="varchar(max)" />
-        </EntityType>-->
         <EntityType Name="AuthLog">
           <Key>
             <PropertyRef Name="Id" />
@@ -1059,8 +1050,6 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'sunwingVouchers.dbo.VoucherTable' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="VoucherTable">
           <Key>
             <PropertyRef Name="Id" />
@@ -1226,6 +1215,7 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherTable' does not have a 
           <EntitySet Name="VoucherGeneration" EntityType="Self.VoucherGeneration" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VoucherMaster" EntityType="Self.VoucherMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="voucher-request" EntityType="Self.voucher-request" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VoucherTable" EntityType="Self.VoucherTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="API_Auth" EntityType="Self.API_Auth" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [API_Auth].[partner] AS [partner], 
@@ -1345,12 +1335,6 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherTable' does not have a 
     [VoucherMasterBckup].[DateVoid] AS [DateVoid], 
     [VoucherMasterBckup].[VoucherValue] AS [VoucherValue]
     FROM [dbo].[VoucherMasterBckup] AS [VoucherMasterBckup]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="VoucherTable" EntityType="Self.VoucherTable" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [VoucherTable].[VoucherCode] AS [VoucherCode], 
-    [VoucherTable].[Id] AS [Id]
-    FROM [dbo].[VoucherTable] AS [VoucherTable]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
