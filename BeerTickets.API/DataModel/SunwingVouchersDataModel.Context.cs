@@ -87,5 +87,7 @@ namespace Issuance.API.DataModel
         public virtual DbSet<portal_userpanel_APIUsers> portal_userpanel_APIUsers { get; set; }
         public virtual DbSet<VoucherMasterBckup> VoucherMasterBckups { get; set; }
         public virtual DbSet<VoucherTable> VoucherTables { get; set; }
+        public virtual DbSet<ProcessVouchersUpload> ProcessVouchersUploads { get; set; }
+        public virtual DbSet<VouchersUpload> VouchersUploads { get; set; }
     }
 }

@@ -11,5 +11,10 @@
         public bool IsDeliver { get; set; }
         public bool IsSuccess { get; set; }
         public string ErrorMsg { get; set; }
+        public bool IsFirstRowAsColumnNames { get; set; }
+
+        // for Content for bulk upload 
+
+        public string base64Content { get; set; }
     }
 }

@@ -61,12 +61,10 @@
     <Reference Include="OpenHtmlToPdf, Version=1.12.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenHtmlToPdf.1.12.0.0\lib\net45\OpenHtmlToPdf.dll</HintPath>
     </Reference>
-    <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Swashbuckle.Core.5.6.0\lib\net40\Swashbuckle.Core.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -154,7 +152,6 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
     <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
@@ -308,6 +305,9 @@
     <Compile Include="DataModel\portal_userpanel_roles.cs">
       <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\ProcessVouchersUpload.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataModel\SunwingVouchersDataModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -383,6 +383,9 @@
     <Compile Include="DataModel\VoucherMasterBckup.cs">
       <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\VouchersUpload.cs">
+      <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataModel\VoucherTable.cs">
       <DependentUpon>SunwingVouchersDataModel.tt</DependentUpon>
     </Compile>
@@ -418,6 +421,8 @@
     </Content>
     <Content Include="DbScripts\1.ApiUser.sql" />
     <Content Include="DbScripts\2.AddPrimaryKeyVoucherTable.sql" />
+    <Content Include="DbScripts\3.VoucherUploadTable.sql" />
+    <Content Include="DbScripts\4.ProcessVoucherUpload.sql" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -449,6 +454,8 @@
     <Content Include="DataModel\SunwingVouchersDataModel.edmx.diagram">
       <DependentUpon>SunwingVouchersDataModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Content\Template\export.csv" />
+    <Content Include="Content\Upload\20190404164651_test.csv" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />

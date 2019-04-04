@@ -561,6 +561,22 @@ warning 6002: The table/view 'sunwingVouchers.dbo.portal_userpanel_APIUsers' doe
           <Property Name="functions" Type="varchar(max)" Nullable="false" />
           <Property Name="last_modified" Type="datetime2" Precision="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="ProcessVouchersUpload">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UploadId" Type="int" />
+          <Property Name="Status" Type="smallint" />
+          <Property Name="IsEmailSent" Type="bit" />
+          <Property Name="IsPdfSent" Type="bit" />
+          <Property Name="ErrorMsg" Type="varchar(max)" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
+          <Property Name="ModefiedOn" Type="datetime" />
+          <Property Name="ModefiedBy" Type="varchar" MaxLength="50" />
+          <Property Name="IsDeleated" Type="bit" />
+        </EntityType>
         <EntityType Name="token_generate">
           <Key>
             <PropertyRef Name="Id" />
@@ -1050,6 +1066,19 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
+        <EntityType Name="VouchersUpload">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UploadContent" Type="varchar(max)" />
+          <Property Name="Status" Type="int" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
+          <Property Name="ModefiedOn" Type="datetime" />
+          <Property Name="ModefiedBy" Type="varchar" MaxLength="50" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
         <EntityType Name="VoucherTable">
           <Key>
             <PropertyRef Name="Id" />
@@ -1161,6 +1190,18 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ProcessVouchersUpload_VouchersUpload">
+          <End Role="VouchersUpload" Type="Self.VouchersUpload" Multiplicity="0..1" />
+          <End Role="ProcessVouchersUpload" Type="Self.ProcessVouchersUpload" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VouchersUpload">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProcessVouchersUpload">
+              <PropertyRef Name="UploadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="sunwingVouchersModelStoreContainer">
           <EntitySet Name="API_UploadStatus" EntityType="Self.API_UploadStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="APIActionLog" EntityType="Self.APIActionLog" Schema="dbo" store:Type="Tables" />
@@ -1195,6 +1236,7 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <EntitySet Name="PaymentAuthLog" EntityType="Self.PaymentAuthLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="portal_userpanel_admin" EntityType="Self.portal_userpanel_admin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="portal_userpanel_roles" EntityType="Self.portal_userpanel_roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProcessVouchersUpload" EntityType="Self.ProcessVouchersUpload" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="token_generate" EntityType="Self.token_generate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="token-request" EntityType="Self.token-request" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="transaction-agency" EntityType="Self.transaction-agency" Schema="dbo" store:Type="Tables" />
@@ -1215,6 +1257,7 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <EntitySet Name="VoucherGeneration" EntityType="Self.VoucherGeneration" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VoucherMaster" EntityType="Self.VoucherMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="voucher-request" EntityType="Self.voucher-request" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VouchersUpload" EntityType="Self.VouchersUpload" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VoucherTable" EntityType="Self.VoucherTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="API_Auth" EntityType="Self.API_Auth" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1368,6 +1411,10 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
             <End Role="CouponTypes" EntitySet="CouponTypes" />
             <End Role="VoucherCampaign" EntitySet="VoucherCampaign" />
           </AssociationSet>
+          <AssociationSet Name="FK_ProcessVouchersUpload_VouchersUpload" Association="Self.FK_ProcessVouchersUpload_VouchersUpload">
+            <End Role="VouchersUpload" EntitySet="VouchersUpload" />
+            <End Role="ProcessVouchersUpload" EntitySet="ProcessVouchersUpload" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -1478,6 +1525,12 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <AssociationSet Name="AspNetUserRoles" Association="sunwingVouchersModel.AspNetUserRoles">
             <End Role="AspNetRole" EntitySet="AspNetRoles" />
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <EntitySet Name="ProcessVouchersUploads" EntityType="sunwingVouchersModel.ProcessVouchersUpload" />
+          <EntitySet Name="VouchersUploads" EntityType="sunwingVouchersModel.VouchersUpload" />
+          <AssociationSet Name="FK_ProcessVouchersUpload_VouchersUpload" Association="sunwingVouchersModel.FK_ProcessVouchersUpload_VouchersUpload">
+            <End Role="VouchersUpload" EntitySet="VouchersUploads" />
+            <End Role="ProcessVouchersUpload" EntitySet="ProcessVouchersUploads" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="API_UploadStatus">
@@ -2585,6 +2638,49 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <End Type="sunwingVouchersModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
           <End Type="sunwingVouchersModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
         </Association>
+        <EntityType Name="ProcessVouchersUpload">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UploadId" Type="Int32" />
+          <Property Name="Status" Type="Int16" />
+          <Property Name="IsEmailSent" Type="Boolean" />
+          <Property Name="IsPdfSent" Type="Boolean" />
+          <Property Name="ErrorMsg" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ModefiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModefiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsDeleated" Type="Boolean" />
+          <NavigationProperty Name="VouchersUpload" Relationship="sunwingVouchersModel.FK_ProcessVouchersUpload_VouchersUpload" FromRole="ProcessVouchersUpload" ToRole="VouchersUpload" />
+        </EntityType>
+        <EntityType Name="VouchersUpload">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UploadContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ModefiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModefiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="ProcessVouchersUploads" Relationship="sunwingVouchersModel.FK_ProcessVouchersUpload_VouchersUpload" FromRole="VouchersUpload" ToRole="ProcessVouchersUpload" />
+        </EntityType>
+        <Association Name="FK_ProcessVouchersUpload_VouchersUpload">
+          <End Type="sunwingVouchersModel.VouchersUpload" Role="VouchersUpload" Multiplicity="0..1" />
+          <End Type="sunwingVouchersModel.ProcessVouchersUpload" Role="ProcessVouchersUpload" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VouchersUpload">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProcessVouchersUpload">
+              <PropertyRef Name="UploadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3677,6 +3773,37 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="ProcessVouchersUploads">
+            <EntityTypeMapping TypeName="sunwingVouchersModel.ProcessVouchersUpload">
+              <MappingFragment StoreEntitySet="ProcessVouchersUpload">
+                <ScalarProperty Name="IsDeleated" ColumnName="IsDeleated" />
+                <ScalarProperty Name="ModefiedBy" ColumnName="ModefiedBy" />
+                <ScalarProperty Name="ModefiedOn" ColumnName="ModefiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ErrorMsg" ColumnName="ErrorMsg" />
+                <ScalarProperty Name="IsPdfSent" ColumnName="IsPdfSent" />
+                <ScalarProperty Name="IsEmailSent" ColumnName="IsEmailSent" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="UploadId" ColumnName="UploadId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VouchersUploads">
+            <EntityTypeMapping TypeName="sunwingVouchersModel.VouchersUpload">
+              <MappingFragment StoreEntitySet="VouchersUpload">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModefiedBy" ColumnName="ModefiedBy" />
+                <ScalarProperty Name="ModefiedOn" ColumnName="ModefiedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="UploadContent" ColumnName="UploadContent" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

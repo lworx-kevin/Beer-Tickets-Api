@@ -74,6 +74,9 @@
         <AssociationConnector Association="sunwingVouchersModel.FK_portal_VoucherCampaign_portal_CouponFunding" />
         <AssociationConnector Association="sunwingVouchersModel.FK_portal_VoucherCampaign_portal_CouponTypes" />
         <AssociationConnector Association="sunwingVouchersModel.AspNetUserRoles" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.ProcessVouchersUpload" Width="1.5" PointX="24.625" PointY="24" />
+        <EntityTypeShape EntityType="sunwingVouchersModel.VouchersUpload" Width="1.5" PointX="22.375" PointY="24.25" />
+        <AssociationConnector Association="sunwingVouchersModel.FK_ProcessVouchersUpload_VouchersUpload" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
