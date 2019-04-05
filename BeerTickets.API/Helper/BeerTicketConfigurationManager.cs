@@ -2,7 +2,7 @@
 using System;
 using System.Web.WebPages;
 
-namespace Issuance.API.Helper
+namespace BeerTicket.API.Models
 {
     public static class BeerTicketConfigurationManager
     {

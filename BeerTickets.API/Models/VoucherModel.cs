@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Issuance.API.Models
+namespace BeerTicket.API.Models
 {
-    public class VoucherViewModel : PayLoad
+    public class VoucherModel : PayLoad
     {
         public int Id { get; set; }
         public string VoucherId { get; set; }

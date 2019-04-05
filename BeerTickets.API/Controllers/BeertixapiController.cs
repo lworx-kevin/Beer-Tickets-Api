@@ -1,8 +1,7 @@
 ﻿using BeerTicket.API.BusinessLayer;
+using BeerTicket.API.DataModel;
+using BeerTicket.API.Helper;
 using BeerTicket.API.Models;
-using Issuance.API.DataModel;
-using Issuance.API.Helper;
-using Issuance.API.Models;
 using Microsoft.AspNet.Identity;
 using OpenHtmlToPdf;
 using System;
@@ -49,7 +48,7 @@ namespace BeerTicket.API.Controllers
         /// <returns></returns>
         [Route("create")]
         [HttpPost]
-        public async Task<VoucherViewModel> AddNewVoucher(VoucherViewModel voucherViewModel)
+        public async Task<VoucherModel> AddNewVoucher(VoucherModel voucherViewModel)
         {
             //  VoucherViewModel voucherViewModel = new VoucherViewModel();
             try
@@ -131,8 +130,11 @@ namespace BeerTicket.API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("generate")]
-        public async Task<PayLoad> GenerateVouchers(PayLoad payLoad)
+        public async Task<VouchersUploadModel> GenerateVouchers(VouchersUploadModel vouchersUploadModel)
         {
+            SunwingVouchersEntities context = new SunwingVouchersEntities();
+            IssuanceManager issuanceManager = new IssuanceManager(context);
+
             #region test data 
             //payLoad.Token = "";
             #endregion
@@ -162,10 +164,23 @@ namespace BeerTicket.API.Controllers
             {
                 fs.Write(fileBytes, 0, fileBytes.Length);
             }
+            // save this file to database first step when api will hit the data with base64 string 
+            //VouchersUploadModel vouchersUploadModel = new VouchersUploadModel()
+            //{
+            vouchersUploadModel.UploadContent = fileLocation;
+            vouchersUploadModel.CreatedOn = DateTime.Now;
+            vouchersUploadModel.Status = (int)VouchersUploadStatus.NotProcessed;
+            //};
 
-            payLoad.IsSuccess = await SaveExcelToDb(fileLocation, relativeExcelPath, payLoad.IsFirstRowAsColumnNames);
-            //now read the file content
-            return payLoad;
+            // add new voucher upload 
+            if (issuanceManager.AddVouchersUpload(vouchersUploadModel))
+            {
+                //issuanceManager.SaveVouchersUpload();
+                // this method will be run by scheduler 
+                await SaveCsvToDb(vouchersUploadModel);
+                //now read the file content
+            }
+            return vouchersUploadModel;
         }
         /// <summary>
         /// 
@@ -174,18 +189,23 @@ namespace BeerTicket.API.Controllers
         /// <param name="relativeExcelPath"></param>
         /// <param name="IsFirstRowAsColumnNames"></param>
         /// <returns></returns>
-        public async Task<bool> SaveExcelToDb(string fileLocation, string relativeExcelPath, bool IsFirstRowAsColumnNames)
+        public async Task<bool> SaveCsvToDb(VouchersUploadModel vouchersUploadModel)
         {
+            int successCount = 0;// coupons successfully inserted 
+            int notSuccessCount = 0; // coupons not successfully inserted 
+            int totalProcessed = 0;// to track the current row of the sheet been iterated 
+
+            SunwingVouchersEntities context = new SunwingVouchersEntities();
+            IssuanceManager issuanceManager = new IssuanceManager(context);
 
             // for testing 
-            IsFirstRowAsColumnNames = true;
+            vouchersUploadModel.IsFirstRowAsColumnNames = true;
             List<string> ErrorMassage = new List<string>();
             try
             {
-                using (var reader = new StreamReader(fileLocation))
+                using (var reader = new StreamReader(vouchersUploadModel.UploadContent))
                 {
                     List<string> csvRows = new List<string>();
-
                     while (!reader.EndOfStream)
                     {
                         var line = reader.ReadLine();
@@ -193,12 +213,11 @@ namespace BeerTicket.API.Controllers
                         csvRows.Add(values[0]);
                     }
                     // if first row is header remove that 
-                    if (IsFirstRowAsColumnNames && csvRows.Count > 1)
+                    if (vouchersUploadModel.IsFirstRowAsColumnNames && csvRows.Count > 1)
                     {
                         csvRows.RemoveAt(0);
                     }
-                    // check for validation for   each row              
-
+                    // check for validation for   each row             
                     //read row data one by one
                     foreach (var rowItem in csvRows)
                     {
@@ -206,39 +225,60 @@ namespace BeerTicket.API.Controllers
                         // and save the status to database 
                         // with status 
                         var validationData = CsvRowValidate(rowItem);
+                        ProcessVouchersUploadModel processVouchersUploadModel = new ProcessVouchersUploadModel();
+                        processVouchersUploadModel.UploadId = vouchersUploadModel.Id;
                         // if no error 
                         if (!validationData.Item1)
                         {
-                            await AddNewVoucher(validationData.Item3);
+                            var voucher = await AddNewVoucher(validationData.Item3);
+                            if (voucher.IsSuccess)
+                            {
+                                successCount++;
+                                processVouchersUploadModel.Status = (int)ProcessVouchersUploadStatus.Success;
+                            }
+                            else
+                            {
+                                notSuccessCount++;
+                                processVouchersUploadModel.Status = (int)ProcessVouchersUploadStatus.NotSuccess;
+                                processVouchersUploadModel.ErrorMsg = voucher.ErrorMsg;
+                            }
+                            //save the status in ProcessVouchersUpload  with status success
                         }
-                        // save this to other table  where each record is  been  inserted 
-                        //[ProcessVouchersUpload] with status and 
-
-                        ProcessVouchersUpload processVouchersUpload = new ProcessVouchersUpload()
+                        else
                         {
-                            //Status = validationData.Item1==true? create the enum to store the values 
-                        };
-
-
+                            notSuccessCount++;
+                            //save the status in ProcessVouchersUpload with status not success 
+                            processVouchersUploadModel.ErrorMsg = "Row No " + totalProcessed + "process with error " + processVouchersUploadModel.ErrorMsg;
+                        }
+                        issuanceManager.AddProcessVouchersUpload(processVouchersUploadModel);
+                        totalProcessed++;
                     }
                 }
+
+                //
+                vouchersUploadModel.Status = (int)VouchersUploadStatus.ProcessedWithSuccess;
+                vouchersUploadModel.SuccessfullyProcessed = successCount;
+                vouchersUploadModel.NotSuccessfullyProcessed = notSuccessCount;
+                vouchersUploadModel.TotalProcessed = totalProcessed;
+                issuanceManager.AddVouchersUpload(vouchersUploadModel);
                 return true;
             }
             catch (Exception ex)
             {
+                // add total process and unprocessed 
+                vouchersUploadModel.Status = (int)VouchersUploadStatus.ProcessedWithNotSuccess;
+                issuanceManager.AddVouchersUpload(vouchersUploadModel);
                 return false;
             }
         }
-
-
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public Tuple<bool, List<string>, VoucherViewModel> CsvRowValidate(string rowItem)        {
+        public Tuple<bool, List<string>, VoucherModel> CsvRowValidate(string rowItem)        {
             var voucher = rowItem.Split(',').ToArray();
             bool isError = false;
-            VoucherViewModel voucherViewModel = new VoucherViewModel();
+            VoucherModel voucherViewModel = new VoucherModel();
             List<string> errorMassage = new List<string>();
             try            {                if (string.IsNullOrEmpty(voucher[1]))                {
                     isError = true;                    errorMassage.Add("FullName Required");                }
@@ -246,17 +286,22 @@ namespace BeerTicket.API.Controllers
                 {
                     isError = true;                    errorMassage.Add("VoucherValue Required");
                 }
+                if (!Utilities.IsValidDatetime(voucher[6]))
+                {
+                    isError = true;                    errorMassage.Add("Expiry Date is not in Right Format");
 
+                }
                 if (!isError)
                 {
-
-                    // var voucher = rowItem.Split(',').ToArray();
+                    //var voucher = rowItem.Split(',').ToArray();
                     #region Testing Data 
                     // for testing 
                     voucherViewModel.Token = "130E3452920015FEB7EE83AD7B1E80850495C4A0DDA137498E39783DC7355453";
                     voucherViewModel.CampaignId = 46;
-                    voucherViewModel.FullName = voucher[1];
-                    voucherViewModel.Expirydate = System.DateTime.Now;//Convert.ToDateTime(voucher[6]);
+                    voucherViewModel.FirstName = voucher[15];
+                    voucherViewModel.LastName = voucher[16];
+                    voucherViewModel.FullName = voucher[0];
+                    voucherViewModel.Expirydate = Convert.ToDateTime(voucher[6]);//System.DateTime.Now;//Convert.ToDateTime(voucher[6]);
                     voucherViewModel.VoucherAmount = Decimal.Parse(voucher[7]); // same 
                     voucherViewModel.VoucherValue = Decimal.Parse(voucher[7]);  // same 
                     voucherViewModel.Status = "Approved";
@@ -268,9 +313,7 @@ namespace BeerTicket.API.Controllers
                     #endregion
                 }
             }            catch (Exception ex)            {
-
             }
-
             return Tuple.Create(isError, errorMassage, voucherViewModel);
         }
 

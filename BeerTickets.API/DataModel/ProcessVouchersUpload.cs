@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Issuance.API.DataModel
+namespace BeerTicket.API.DataModel
 {
     using System;
     using System.Collections.Generic;
@@ -24,7 +24,7 @@ namespace Issuance.API.DataModel
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> ModefiedOn { get; set; }
         public string ModefiedBy { get; set; }
-        public Nullable<bool> IsDeleated { get; set; }
+        public bool IsDeleted { get; set; }
     
         public virtual VouchersUpload VouchersUpload { get; set; }
     }

@@ -1,5 +1,5 @@
-﻿using Issuance.API.DataModel;
-using Issuance.API.Models;
+﻿using BeerTicket.API.DataModel;
+using BeerTicket.API.Models;
 using System;
 using System.Linq;
 
@@ -13,9 +13,10 @@ namespace BeerTicket.API.BusinessLayer
             _dbContext = dbContext;
 
         }
+
         #region methods
         /// <summary>
-        /// this  is created an Encripted token 
+        /// this is created an Encrypted token 
         /// </summary>
         /// <returns></returns>
         public string CreateToken()
@@ -29,7 +30,6 @@ namespace BeerTicket.API.BusinessLayer
             String RandomNumb = l.ToString().Replace("-", "").Substring(1, 8);
             return Cryption.GetEncryptedSHA256(RandomNumb);
         }
-
         /// <summary>
         /// Generate Unique Token
         /// </summary>
@@ -56,7 +56,7 @@ namespace BeerTicket.API.BusinessLayer
         /// 
         /// </summary>
         /// <returns></returns>
-        public bool IsAddNewVoucherPayloadValid(VoucherViewModel voucherViewModel)
+        public bool IsAddNewVoucherPayloadValid(VoucherModel voucherViewModel)
         {
             //Reject any payload that does not contain a valid token
             if (String.IsNullOrEmpty(voucherViewModel.Token))
@@ -80,7 +80,6 @@ namespace BeerTicket.API.BusinessLayer
             }
             return false;
         }
-
         /// <summary>
         /// check Voucher Campaign Exists by Id 
         /// </summary>
@@ -90,7 +89,6 @@ namespace BeerTicket.API.BusinessLayer
         {
             return _dbContext.VoucherCampaigns.Where(x => x.Id == campaignId && x.Status == 1).Any();
         }
-
         /// <summary>
         /// create a new voucher based on prefix 
         /// </summary>
@@ -114,9 +112,8 @@ namespace BeerTicket.API.BusinessLayer
         /// <summary>
         /// add voucher master 
         /// </summary>
-        public bool AddVoucherMaster(VoucherViewModel voucherViewModel)
+        public bool AddVoucherMaster(VoucherModel voucherViewModel)
         {
-
             try
             {
                 #region Get Campaign Category Prefix
@@ -176,6 +173,7 @@ namespace BeerTicket.API.BusinessLayer
                 #endregion
                 VoucherMaster voucherMaster = new VoucherMaster()
                 {
+
                     CampaignId = voucherViewModel.CampaignId,
                     VoucherId = newVoucherCode,
                     FirstName = voucherViewModel.FirstName,
@@ -200,6 +198,98 @@ namespace BeerTicket.API.BusinessLayer
                 voucherViewModel.FullName = voucherMaster.FullName;
                 //DateTime Created = DateTime.Now;
                 //DateTime IssueDate = DateTime.Now;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// add new upload data in database for further iteration 
+        /// </summary>
+        /// <param name="vouchersUploadModel"></param>
+        /// <returns></returns>
+        public bool AddVouchersUpload(VouchersUploadModel vouchersUploadModel)
+        {
+            try
+            {
+                // update  
+                if (vouchersUploadModel.Id > 0)
+                {
+                    var processVoucher = _dbContext.VouchersUploads.Where(x => x.Id == vouchersUploadModel.Id &&
+                    !x.IsDeleted).FirstOrDefault();
+                    if (processVoucher != null)
+                    {
+                        processVoucher.Status = vouchersUploadModel.Status;
+                        processVoucher.ModefiedOn = System.DateTime.Now;
+
+
+                        //number of records that parsed successfully 
+                        processVoucher.SuccessfullyProcessed = vouchersUploadModel.SuccessfullyProcessed;
+                        processVoucher.NotSuccessfullyProcessed = vouchersUploadModel.NotSuccessfullyProcessed;
+                        processVoucher.TotalProcessed = vouchersUploadModel.TotalProcessed;
+                        _dbContext.SaveChanges();
+                    }
+
+                }
+                else // add
+                {
+                    VouchersUpload vouchersUpload = new VouchersUpload()
+                    {
+                        UploadContent = vouchersUploadModel.UploadContent,
+                        Status = vouchersUploadModel.Status,
+                        CreatedOn = vouchersUploadModel.CreatedOn
+                    };
+                    _dbContext.VouchersUploads.Add(vouchersUpload);
+                    _dbContext.SaveChanges();
+                    // return this 
+                    vouchersUploadModel.Id = vouchersUpload.Id;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vouchersUploadModel"></param>
+        /// <returns></returns>
+        public bool AddProcessVouchersUpload(ProcessVouchersUploadModel processVouchersUploadModel)
+        {
+            try
+            {
+                // update  
+                if (processVouchersUploadModel.Id > 0)
+                {
+                    // retriever record
+                    var processVoucher = _dbContext.ProcessVouchersUploads.Where(x => x.Id == processVouchersUploadModel.Id && !x.IsDeleted).FirstOrDefault();
+                    if (processVoucher != null)
+                    {
+                        processVoucher.ErrorMsg = processVouchersUploadModel.ErrorMsg;
+                        processVoucher.Status = processVouchersUploadModel.Status;
+                        processVoucher.ModefiedOn = System.DateTime.Now;
+                    }
+                }
+                else
+                {
+                    //add new records here 
+                    ProcessVouchersUpload processVouchersUpload = new ProcessVouchersUpload()
+                    {
+                        UploadId = processVouchersUploadModel.UploadId,
+                        Status = processVouchersUploadModel.Status,
+                        CreatedOn = DateTime.Now,
+                        ErrorMsg = processVouchersUploadModel.ErrorMsg,
+
+                    };
+                    //
+                    _dbContext.ProcessVouchersUploads.Add(processVouchersUpload);
+                    _dbContext.SaveChanges();
+                    processVouchersUploadModel.Id = processVouchersUpload.Id;
+                }
                 return true;
             }
             catch (Exception ex)

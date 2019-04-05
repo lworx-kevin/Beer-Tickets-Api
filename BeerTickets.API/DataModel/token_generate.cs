@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Issuance.API.DataModel
+namespace BeerTicket.API.DataModel
 {
     using System;
     using System.Collections.Generic;

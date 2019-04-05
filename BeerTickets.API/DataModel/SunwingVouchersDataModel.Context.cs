@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Issuance.API.DataModel
+namespace BeerTicket.API.DataModel
 {
     using System;
     using System.Data.Entity;
@@ -25,10 +25,10 @@ namespace Issuance.API.DataModel
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<ApiUser> ApiUsers { get; set; }
         public virtual DbSet<API_UploadStatus> API_UploadStatus { get; set; }
         public virtual DbSet<APIActionLog> APIActionLogs { get; set; }
         public virtual DbSet<APIAuthStatu> APIAuthStatus { get; set; }
+        public virtual DbSet<ApiUser> ApiUsers { get; set; }
         public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
@@ -57,6 +57,7 @@ namespace Issuance.API.DataModel
         public virtual DbSet<PaymentAuthLog> PaymentAuthLogs { get; set; }
         public virtual DbSet<portal_userpanel_admin> portal_userpanel_admin { get; set; }
         public virtual DbSet<portal_userpanel_roles> portal_userpanel_roles { get; set; }
+        public virtual DbSet<ProcessVouchersUpload> ProcessVouchersUploads { get; set; }
         public virtual DbSet<token_generate> token_generate { get; set; }
         public virtual DbSet<token_request> token_request { get; set; }
         public virtual DbSet<transaction_agency> transaction_agency { get; set; }
@@ -77,6 +78,8 @@ namespace Issuance.API.DataModel
         public virtual DbSet<VoucherGeneration> VoucherGenerations { get; set; }
         public virtual DbSet<VoucherMaster> VoucherMasters { get; set; }
         public virtual DbSet<voucher_request> voucher_request { get; set; }
+        public virtual DbSet<VouchersUpload> VouchersUploads { get; set; }
+        public virtual DbSet<VoucherTable> VoucherTables { get; set; }
         public virtual DbSet<API_Auth> API_Auth { get; set; }
         public virtual DbSet<CertificateMasterBckup> CertificateMasterBckups { get; set; }
         public virtual DbSet<CertificateTable> CertificateTables { get; set; }
@@ -86,8 +89,5 @@ namespace Issuance.API.DataModel
         public virtual DbSet<portal_role_function_access> portal_role_function_access { get; set; }
         public virtual DbSet<portal_userpanel_APIUsers> portal_userpanel_APIUsers { get; set; }
         public virtual DbSet<VoucherMasterBckup> VoucherMasterBckups { get; set; }
-        public virtual DbSet<VoucherTable> VoucherTables { get; set; }
-        public virtual DbSet<ProcessVouchersUpload> ProcessVouchersUploads { get; set; }
-        public virtual DbSet<VouchersUpload> VouchersUploads { get; set; }
     }
 }

@@ -12,8 +12,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Issuance.API</RootNamespace>
-    <AssemblyName>Issuance.API</AssemblyName>
+    <RootNamespace>BeerTicket.API</RootNamespace>
+    <AssemblyName>BeerTicket.API</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -397,9 +397,14 @@
     </Compile>
     <Compile Include="Helper\BeerTicketConfigurationManager.cs" />
     <Compile Include="Helper\EmailService.cs" />
-    <Compile Include="Models\ApiUsersViewModel.cs" />
+    <Compile Include="Helper\Utilities.cs" />
+    <Compile Include="Models\ApiUsersModel.cs" />
+    <Compile Include="Models\Enum\VouchersUploadStatus.cs" />
+    <Compile Include="Models\Enum\ProcessVouchersUploadStatus.cs" />
     <Compile Include="Models\PayLoad.cs" />
-    <Compile Include="Models\VoucherViewModel.cs" />
+    <Compile Include="Models\ProcessVouchersUploadModel.cs" />
+    <Compile Include="Models\VouchersUploadModel.cs" />
+    <Compile Include="Models\VoucherModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -447,6 +452,8 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <Content Include="Content\Template\export.csv" />
+    <Content Include="Content\Upload\20190404164651_test.csv" />
     <EntityDeploy Include="DataModel\SunwingVouchersDataModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SunwingVouchersDataModel.Designer.cs</LastGenOutput>
@@ -454,8 +461,6 @@
     <Content Include="DataModel\SunwingVouchersDataModel.edmx.diagram">
       <DependentUpon>SunwingVouchersDataModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Content\Template\export.csv" />
-    <Content Include="Content\Upload\20190404164651_test.csv" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />

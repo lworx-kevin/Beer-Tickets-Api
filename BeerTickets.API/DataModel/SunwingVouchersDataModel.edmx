@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="sunwingVouchersModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="SunwingVouchersModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
 warning 6002: The table/view 'sunwingVouchers.dbo.API_Auth' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="API_Auth">
@@ -119,6 +119,15 @@ warning 6002: The table/view 'sunwingVouchers.dbo.API_Auth' does not have a prim
           <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'sunwingVouchers.dbo.audit' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="audit">
+          <Property Name="timestamp" Type="datetime" />
+          <Property Name="user" Type="int" />
+          <Property Name="function" Type="varchar" MaxLength="50" />
+          <Property Name="text" Type="ntext" />
+          <Property Name="Status" Type="varchar(max)" />
+        </EntityType>-->
         <EntityType Name="AuthLog">
           <Key>
             <PropertyRef Name="Id" />
@@ -575,7 +584,7 @@ warning 6002: The table/view 'sunwingVouchers.dbo.portal_userpanel_APIUsers' doe
           <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
           <Property Name="ModefiedOn" Type="datetime" />
           <Property Name="ModefiedBy" Type="varchar" MaxLength="50" />
-          <Property Name="IsDeleated" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="token_generate">
           <Key>
@@ -1077,7 +1086,10 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
           <Property Name="ModefiedOn" Type="datetime" />
           <Property Name="ModefiedBy" Type="varchar" MaxLength="50" />
-          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="SuccessfullyProcessed" Type="int" />
+          <Property Name="NotSuccessfullyProcessed" Type="int" />
+          <Property Name="TotalProcessed" Type="int" />
         </EntityType>
         <EntityType Name="VoucherTable">
           <Key>
@@ -1202,7 +1214,7 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="sunwingVouchersModelStoreContainer">
+        <EntityContainer Name="SunwingVouchersModelStoreContainer">
           <EntitySet Name="API_UploadStatus" EntityType="Self.API_UploadStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="APIActionLog" EntityType="Self.APIActionLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="APIAuthStatus" EntityType="Self.APIAuthStatus" Schema="dbo" store:Type="Tables" />
@@ -1416,123 +1428,11 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
             <End Role="ProcessVouchersUpload" EntitySet="ProcessVouchersUpload" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="sunwingVouchersModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="ApiUser">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Token" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="TokenTimestamp" Type="DateTime" Precision="3" />
-          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ModefiedOn" Type="DateTime" Precision="3" />
-          <Property Name="ModefiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityContainer Name="SunwingVouchersEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="ApiUsers" EntityType="Self.ApiUser" />
-          <EntitySet Name="API_UploadStatus" EntityType="sunwingVouchersModel.API_UploadStatus" />
-          <EntitySet Name="APIActionLogs" EntityType="sunwingVouchersModel.APIActionLog" />
-          <EntitySet Name="APIAuthStatus" EntityType="sunwingVouchersModel.APIAuthStatu" />
-          <EntitySet Name="AspNetRoles" EntityType="sunwingVouchersModel.AspNetRole" />
-          <EntitySet Name="AspNetUserClaims" EntityType="sunwingVouchersModel.AspNetUserClaim" />
-          <EntitySet Name="AspNetUserLogins" EntityType="sunwingVouchersModel.AspNetUserLogin" />
-          <EntitySet Name="AspNetUsers" EntityType="sunwingVouchersModel.AspNetUser" />
-          <EntitySet Name="AuthLogs" EntityType="sunwingVouchersModel.AuthLog" />
-          <EntitySet Name="BlackOutDates" EntityType="sunwingVouchersModel.BlackOutDate" />
-          <EntitySet Name="CardInfoes" EntityType="sunwingVouchersModel.CardInfo" />
-          <EntitySet Name="CertificateMasters" EntityType="sunwingVouchersModel.CertificateMaster" />
-          <EntitySet Name="certificate_request" EntityType="sunwingVouchersModel.certificate_request" />
-          <EntitySet Name="cheque_request" EntityType="sunwingVouchersModel.cheque_request" />
-          <EntitySet Name="CouponBrands" EntityType="sunwingVouchersModel.CouponBrand" />
-          <EntitySet Name="CouponCategories" EntityType="sunwingVouchersModel.CouponCategory" />
-          <EntitySet Name="CouponFundings" EntityType="sunwingVouchersModel.CouponFunding" />
-          <EntitySet Name="CouponGenerations" EntityType="sunwingVouchersModel.CouponGeneration" />
-          <EntitySet Name="CouponProducts" EntityType="sunwingVouchersModel.CouponProduct" />
-          <EntitySet Name="CouponProductTypes" EntityType="sunwingVouchersModel.CouponProductType" />
-          <EntitySet Name="CouponTypes" EntityType="sunwingVouchersModel.CouponType" />
-          <EntitySet Name="CouponValues" EntityType="sunwingVouchersModel.CouponValue" />
-          <EntitySet Name="creditcard_request" EntityType="sunwingVouchersModel.creditcard_request" />
-          <EntitySet Name="GenerateTokens" EntityType="sunwingVouchersModel.GenerateToken" />
-          <EntitySet Name="invoice_request" EntityType="sunwingVouchersModel.invoice_request" />
-          <EntitySet Name="logs" EntityType="sunwingVouchersModel.log" />
-          <EntitySet Name="other_request" EntityType="sunwingVouchersModel.other_request" />
-          <EntitySet Name="PaymentAPIActionLogs" EntityType="sunwingVouchersModel.PaymentAPIActionLog" />
-          <EntitySet Name="PaymentAPIAuthStatus" EntityType="sunwingVouchersModel.PaymentAPIAuthStatu" />
-          <EntitySet Name="PaymentAuthLogs" EntityType="sunwingVouchersModel.PaymentAuthLog" />
-          <EntitySet Name="portal_userpanel_admin" EntityType="sunwingVouchersModel.portal_userpanel_admin" />
-          <EntitySet Name="portal_userpanel_roles" EntityType="sunwingVouchersModel.portal_userpanel_roles" />
-          <EntitySet Name="token_generate" EntityType="sunwingVouchersModel.token_generate" />
-          <EntitySet Name="token_request" EntityType="sunwingVouchersModel.token_request" />
-          <EntitySet Name="transaction_agency" EntityType="sunwingVouchersModel.transaction_agency" />
-          <EntitySet Name="transaction_agent" EntityType="sunwingVouchersModel.transaction_agent" />
-          <EntitySet Name="transaction_car" EntityType="sunwingVouchersModel.transaction_car" />
-          <EntitySet Name="transaction_cruise" EntityType="sunwingVouchersModel.transaction_cruise" />
-          <EntitySet Name="transaction_error_log" EntityType="sunwingVouchersModel.transaction_error_log" />
-          <EntitySet Name="transaction_excursion" EntityType="sunwingVouchersModel.transaction_excursion" />
-          <EntitySet Name="transaction_hotel" EntityType="sunwingVouchersModel.transaction_hotel" />
-          <EntitySet Name="transaction_inbound" EntityType="sunwingVouchersModel.transaction_inbound" />
-          <EntitySet Name="transaction_master" EntityType="sunwingVouchersModel.transaction_master" />
-          <EntitySet Name="transaction_outbound" EntityType="sunwingVouchersModel.transaction_outbound" />
-          <EntitySet Name="transaction_passenger" EntityType="sunwingVouchersModel.transaction_passenger" />
-          <EntitySet Name="transaction_pnr" EntityType="sunwingVouchersModel.transaction_pnr" />
-          <EntitySet Name="transaction_shipping" EntityType="sunwingVouchersModel.transaction_shipping" />
-          <EntitySet Name="Transaction_Update" EntityType="sunwingVouchersModel.Transaction_Update" />
-          <EntitySet Name="VoucherCampaigns" EntityType="sunwingVouchersModel.VoucherCampaign" />
-          <EntitySet Name="VoucherGenerations" EntityType="sunwingVouchersModel.VoucherGeneration" />
-          <EntitySet Name="VoucherMasters" EntityType="sunwingVouchersModel.VoucherMaster" />
-          <EntitySet Name="voucher_request" EntityType="sunwingVouchersModel.voucher_request" />
-          <EntitySet Name="API_Auth" EntityType="sunwingVouchersModel.API_Auth" />
-          <EntitySet Name="CertificateMasterBckups" EntityType="sunwingVouchersModel.CertificateMasterBckup" />
-          <EntitySet Name="CertificateTables" EntityType="sunwingVouchersModel.CertificateTable" />
-          <EntitySet Name="crm_pages" EntityType="sunwingVouchersModel.crm_pages" />
-          <EntitySet Name="portal_functions" EntityType="sunwingVouchersModel.portal_functions" />
-          <EntitySet Name="portal_modules" EntityType="sunwingVouchersModel.portal_modules" />
-          <EntitySet Name="portal_role_function_access" EntityType="sunwingVouchersModel.portal_role_function_access" />
-          <EntitySet Name="portal_userpanel_APIUsers" EntityType="sunwingVouchersModel.portal_userpanel_APIUsers" />
-          <EntitySet Name="VoucherMasterBckups" EntityType="sunwingVouchersModel.VoucherMasterBckup" />
-          <EntitySet Name="VoucherTables" EntityType="sunwingVouchersModel.VoucherTable" />
-          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="sunwingVouchersModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="sunwingVouchersModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
-          </AssociationSet>
-          <AssociationSet Name="FK_portal_VoucherCampaign_portal_CouponBrand" Association="sunwingVouchersModel.FK_portal_VoucherCampaign_portal_CouponBrand">
-            <End Role="CouponBrand" EntitySet="CouponBrands" />
-            <End Role="VoucherCampaign" EntitySet="VoucherCampaigns" />
-          </AssociationSet>
-          <AssociationSet Name="FK_portal_VoucherCampaign_portal_CouponCategory" Association="sunwingVouchersModel.FK_portal_VoucherCampaign_portal_CouponCategory">
-            <End Role="CouponCategory" EntitySet="CouponCategories" />
-            <End Role="VoucherCampaign" EntitySet="VoucherCampaigns" />
-          </AssociationSet>
-          <AssociationSet Name="FK_portal_VoucherCampaign_portal_CouponFunding" Association="sunwingVouchersModel.FK_portal_VoucherCampaign_portal_CouponFunding">
-            <End Role="CouponFunding" EntitySet="CouponFundings" />
-            <End Role="VoucherCampaign" EntitySet="VoucherCampaigns" />
-          </AssociationSet>
-          <AssociationSet Name="FK_portal_VoucherCampaign_portal_CouponTypes" Association="sunwingVouchersModel.FK_portal_VoucherCampaign_portal_CouponTypes">
-            <End Role="CouponType" EntitySet="CouponTypes" />
-            <End Role="VoucherCampaign" EntitySet="VoucherCampaigns" />
-          </AssociationSet>
-          <AssociationSet Name="AspNetUserRoles" Association="sunwingVouchersModel.AspNetUserRoles">
-            <End Role="AspNetRole" EntitySet="AspNetRoles" />
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-          </AssociationSet>
-          <EntitySet Name="ProcessVouchersUploads" EntityType="sunwingVouchersModel.ProcessVouchersUpload" />
-          <EntitySet Name="VouchersUploads" EntityType="sunwingVouchersModel.VouchersUpload" />
-          <AssociationSet Name="FK_ProcessVouchersUpload_VouchersUpload" Association="sunwingVouchersModel.FK_ProcessVouchersUpload_VouchersUpload">
-            <End Role="VouchersUpload" EntitySet="VouchersUploads" />
-            <End Role="ProcessVouchersUpload" EntitySet="ProcessVouchersUploads" />
-          </AssociationSet>
-        </EntityContainer>
+      <Schema Namespace="SunwingVouchersModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="API_UploadStatus">
           <Key>
             <PropertyRef Name="Upload_Id" />
@@ -1564,23 +1464,38 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <Property Name="DateCreated" Type="DateTime" Precision="3" />
           <Property Name="Token" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="ApiUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Token" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="TokenTimestamp" Type="DateTime" Precision="3" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ModefiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModefiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
         <EntityType Name="AspNetRole">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="sunwingVouchersModel.AspNetUserRoles" FromRole="AspNetRole" ToRole="AspNetUser" />
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="AspNetUserClaim">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUser" Relationship="sunwingVouchersModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaim" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="AspNetUserLogin">
           <Key>
@@ -1588,17 +1503,17 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
             <PropertyRef Name="ProviderKey" />
             <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUser" Relationship="sunwingVouchersModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogin" ToRole="AspNetUser" />
+          <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="AspNetUser">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="GivenName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="FamilyName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -1614,9 +1529,9 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
           <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="AspNetUserClaims" Relationship="sunwingVouchersModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
-          <NavigationProperty Name="AspNetUserLogins" Relationship="sunwingVouchersModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
-          <NavigationProperty Name="AspNetRoles" Relationship="sunwingVouchersModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
+          <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
         </EntityType>
         <EntityType Name="AuthLog">
           <Key>
@@ -1713,7 +1628,7 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <Property Name="Status" Type="Int16" />
           <Property Name="Created" Type="DateTime" Precision="3" />
           <Property Name="Updated" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="VoucherCampaigns" Relationship="sunwingVouchersModel.FK_portal_VoucherCampaign_portal_CouponBrand" FromRole="CouponBrand" ToRole="VoucherCampaign" />
+          <NavigationProperty Name="VoucherCampaigns" Relationship="Self.FK_portal_VoucherCampaign_portal_CouponBrand" FromRole="CouponBrand" ToRole="VoucherCampaign" />
         </EntityType>
         <EntityType Name="CouponCategory">
           <Key>
@@ -1727,7 +1642,7 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <Property Name="Updated" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="PayCommission" Type="Byte" />
-          <NavigationProperty Name="VoucherCampaigns" Relationship="sunwingVouchersModel.FK_portal_VoucherCampaign_portal_CouponCategory" FromRole="CouponCategory" ToRole="VoucherCampaign" />
+          <NavigationProperty Name="VoucherCampaigns" Relationship="Self.FK_portal_VoucherCampaign_portal_CouponCategory" FromRole="CouponCategory" ToRole="VoucherCampaign" />
         </EntityType>
         <EntityType Name="CouponFunding">
           <Key>
@@ -1739,7 +1654,7 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <Property Name="Status" Type="Int16" />
           <Property Name="Created" Type="DateTime" Precision="3" />
           <Property Name="Updated" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="VoucherCampaigns" Relationship="sunwingVouchersModel.FK_portal_VoucherCampaign_portal_CouponFunding" FromRole="CouponFunding" ToRole="VoucherCampaign" />
+          <NavigationProperty Name="VoucherCampaigns" Relationship="Self.FK_portal_VoucherCampaign_portal_CouponFunding" FromRole="CouponFunding" ToRole="VoucherCampaign" />
         </EntityType>
         <EntityType Name="CouponGeneration">
           <Key>
@@ -1807,7 +1722,7 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <Property Name="Status" Type="Int16" />
           <Property Name="Created" Type="DateTime" Precision="3" />
           <Property Name="Updated" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="VoucherCampaigns" Relationship="sunwingVouchersModel.FK_portal_VoucherCampaign_portal_CouponTypes" FromRole="CouponType" ToRole="VoucherCampaign" />
+          <NavigationProperty Name="VoucherCampaigns" Relationship="Self.FK_portal_VoucherCampaign_portal_CouponTypes" FromRole="CouponTypes" ToRole="VoucherCampaign" />
         </EntityType>
         <EntityType Name="CouponValue">
           <Key>
@@ -1936,11 +1851,11 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="username" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="password" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
-          <Property Name="givenname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="familyname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="auth" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="givenname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="familyname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="auth" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="role_id" Type="Int32" Nullable="false" />
           <Property Name="last_modified" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Status" Type="Int32" />
@@ -1950,9 +1865,26 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="functions" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="functions" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="last_modified" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
+        <EntityType Name="ProcessVouchersUpload">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UploadId" Type="Int32" />
+          <Property Name="Status" Type="Int16" />
+          <Property Name="IsEmailSent" Type="Boolean" />
+          <Property Name="IsPdfSent" Type="Boolean" />
+          <Property Name="ErrorMsg" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ModefiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModefiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="VouchersUpload" Relationship="Self.FK_ProcessVouchersUpload_VouchersUpload" FromRole="ProcessVouchersUpload" ToRole="VouchersUpload" />
         </EntityType>
         <EntityType Name="token_generate">
           <Key>
@@ -2344,10 +2276,10 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <Property Name="token" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="DepartDate" Type="DateTime" Precision="3" />
           <Property Name="ReturnDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="CouponBrand" Relationship="sunwingVouchersModel.FK_portal_VoucherCampaign_portal_CouponBrand" FromRole="VoucherCampaign" ToRole="CouponBrand" />
-          <NavigationProperty Name="CouponCategory" Relationship="sunwingVouchersModel.FK_portal_VoucherCampaign_portal_CouponCategory" FromRole="VoucherCampaign" ToRole="CouponCategory" />
-          <NavigationProperty Name="CouponFunding" Relationship="sunwingVouchersModel.FK_portal_VoucherCampaign_portal_CouponFunding" FromRole="VoucherCampaign" ToRole="CouponFunding" />
-          <NavigationProperty Name="CouponType" Relationship="sunwingVouchersModel.FK_portal_VoucherCampaign_portal_CouponTypes" FromRole="VoucherCampaign" ToRole="CouponType" />
+          <NavigationProperty Name="CouponBrand" Relationship="Self.FK_portal_VoucherCampaign_portal_CouponBrand" FromRole="VoucherCampaign" ToRole="CouponBrand" />
+          <NavigationProperty Name="CouponCategory" Relationship="Self.FK_portal_VoucherCampaign_portal_CouponCategory" FromRole="VoucherCampaign" ToRole="CouponCategory" />
+          <NavigationProperty Name="CouponFunding" Relationship="Self.FK_portal_VoucherCampaign_portal_CouponFunding" FromRole="VoucherCampaign" ToRole="CouponFunding" />
+          <NavigationProperty Name="CouponType" Relationship="Self.FK_portal_VoucherCampaign_portal_CouponTypes" FromRole="VoucherCampaign" ToRole="CouponTypes" />
         </EntityType>
         <EntityType Name="VoucherGeneration">
           <Key>
@@ -2413,6 +2345,30 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <Property Name="number" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="VouchersUpload">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UploadContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ModefiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModefiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="SuccessfullyProcessed" Type="Int32" />
+          <Property Name="NotSuccessfullyProcessed" Type="Int32" />
+          <Property Name="TotalProcessed" Type="Int32" />
+          <NavigationProperty Name="ProcessVouchersUploads" Relationship="Self.FK_ProcessVouchersUpload_VouchersUpload" FromRole="VouchersUpload" ToRole="ProcessVouchersUpload" />
+        </EntityType>
+        <EntityType Name="VoucherTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="VoucherCode" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="API_Auth">
           <Key>
@@ -2512,11 +2468,11 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
             <PropertyRef Name="last_modified" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="username" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="password" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
-          <Property Name="givenname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="familyname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="auth" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="givenname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="familyname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="auth" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="role_id" Type="Int32" Nullable="false" />
           <Property Name="last_modified" Type="DateTime" Nullable="false" Precision="0" />
         </EntityType>
@@ -2527,7 +2483,7 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CampaignId" Type="Int32" />
-          <Property Name="VoucherId" Type="String" Nullable="false" MaxLength="16" FixedLength="true" Unicode="false" />
+          <Property Name="VoucherId" Type="String" MaxLength="16" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="VoucherAmount" Type="Decimal" Precision="18" Scale="2" />
@@ -2551,44 +2507,37 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <Property Name="DateVoid" Type="DateTime" Precision="0" />
           <Property Name="VoucherValue" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
-        <EntityType Name="VoucherTable">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="VoucherCode" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-          <End Type="sunwingVouchersModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="sunwingVouchersModel.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaim" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AspNetUser">
+            <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="AspNetUserClaim">
+            <Dependent Role="AspNetUserClaims">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-          <End Type="sunwingVouchersModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="sunwingVouchersModel.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogin" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AspNetUser">
+            <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="AspNetUserLogin">
+            <Dependent Role="AspNetUserLogins">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_portal_VoucherCampaign_portal_CouponBrand">
-          <End Type="sunwingVouchersModel.CouponBrand" Role="CouponBrand" Multiplicity="0..1" />
-          <End Type="sunwingVouchersModel.VoucherCampaign" Role="VoucherCampaign" Multiplicity="*" />
+          <End Role="CouponBrand" Type="Self.CouponBrand" Multiplicity="0..1" />
+          <End Role="VoucherCampaign" Type="Self.VoucherCampaign" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CouponBrand">
               <PropertyRef Name="Id" />
@@ -2599,8 +2548,8 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_portal_VoucherCampaign_portal_CouponCategory">
-          <End Type="sunwingVouchersModel.CouponCategory" Role="CouponCategory" Multiplicity="0..1" />
-          <End Type="sunwingVouchersModel.VoucherCampaign" Role="VoucherCampaign" Multiplicity="*" />
+          <End Role="CouponCategory" Type="Self.CouponCategory" Multiplicity="0..1" />
+          <End Role="VoucherCampaign" Type="Self.VoucherCampaign" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CouponCategory">
               <PropertyRef Name="Id" />
@@ -2611,8 +2560,8 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_portal_VoucherCampaign_portal_CouponFunding">
-          <End Type="sunwingVouchersModel.CouponFunding" Role="CouponFunding" Multiplicity="0..1" />
-          <End Type="sunwingVouchersModel.VoucherCampaign" Role="VoucherCampaign" Multiplicity="*" />
+          <End Role="CouponFunding" Type="Self.CouponFunding" Multiplicity="0..1" />
+          <End Role="VoucherCampaign" Type="Self.VoucherCampaign" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CouponFunding">
               <PropertyRef Name="Id" />
@@ -2623,10 +2572,10 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_portal_VoucherCampaign_portal_CouponTypes">
-          <End Type="sunwingVouchersModel.CouponType" Role="CouponType" Multiplicity="0..1" />
-          <End Type="sunwingVouchersModel.VoucherCampaign" Role="VoucherCampaign" Multiplicity="*" />
+          <End Role="CouponTypes" Type="Self.CouponType" Multiplicity="0..1" />
+          <End Role="VoucherCampaign" Type="Self.VoucherCampaign" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="CouponType">
+            <Principal Role="CouponTypes">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="VoucherCampaign">
@@ -2634,44 +2583,9 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="AspNetUserRoles">
-          <End Type="sunwingVouchersModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
-          <End Type="sunwingVouchersModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
-        </Association>
-        <EntityType Name="ProcessVouchersUpload">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UploadId" Type="Int32" />
-          <Property Name="Status" Type="Int16" />
-          <Property Name="IsEmailSent" Type="Boolean" />
-          <Property Name="IsPdfSent" Type="Boolean" />
-          <Property Name="ErrorMsg" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ModefiedOn" Type="DateTime" Precision="3" />
-          <Property Name="ModefiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="IsDeleated" Type="Boolean" />
-          <NavigationProperty Name="VouchersUpload" Relationship="sunwingVouchersModel.FK_ProcessVouchersUpload_VouchersUpload" FromRole="ProcessVouchersUpload" ToRole="VouchersUpload" />
-        </EntityType>
-        <EntityType Name="VouchersUpload">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UploadContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="Int32" />
-          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ModefiedOn" Type="DateTime" Precision="3" />
-          <Property Name="ModefiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="ProcessVouchersUploads" Relationship="sunwingVouchersModel.FK_ProcessVouchersUpload_VouchersUpload" FromRole="VouchersUpload" ToRole="ProcessVouchersUpload" />
-        </EntityType>
         <Association Name="FK_ProcessVouchersUpload_VouchersUpload">
-          <End Type="sunwingVouchersModel.VouchersUpload" Role="VouchersUpload" Multiplicity="0..1" />
-          <End Type="sunwingVouchersModel.ProcessVouchersUpload" Role="ProcessVouchersUpload" Multiplicity="*" />
+          <End Role="VouchersUpload" Type="Self.VouchersUpload" Multiplicity="0..1" />
+          <End Role="ProcessVouchersUpload" Type="Self.ProcessVouchersUpload" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="VouchersUpload">
               <PropertyRef Name="Id" />
@@ -2681,14 +2595,150 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="AspNetUserRoles">
+          <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="SunwingVouchersEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="API_UploadStatus" EntityType="Self.API_UploadStatus" />
+          <EntitySet Name="APIActionLogs" EntityType="Self.APIActionLog" />
+          <EntitySet Name="APIAuthStatus" EntityType="Self.APIAuthStatu" />
+          <EntitySet Name="ApiUsers" EntityType="Self.ApiUser" />
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
+          <EntitySet Name="AuthLogs" EntityType="Self.AuthLog" />
+          <EntitySet Name="BlackOutDates" EntityType="Self.BlackOutDate" />
+          <EntitySet Name="CardInfoes" EntityType="Self.CardInfo" />
+          <EntitySet Name="CertificateMasters" EntityType="Self.CertificateMaster" />
+          <EntitySet Name="certificate_request" EntityType="Self.certificate_request" />
+          <EntitySet Name="cheque_request" EntityType="Self.cheque_request" />
+          <EntitySet Name="CouponBrands" EntityType="Self.CouponBrand" />
+          <EntitySet Name="CouponCategories" EntityType="Self.CouponCategory" />
+          <EntitySet Name="CouponFundings" EntityType="Self.CouponFunding" />
+          <EntitySet Name="CouponGenerations" EntityType="Self.CouponGeneration" />
+          <EntitySet Name="CouponProducts" EntityType="Self.CouponProduct" />
+          <EntitySet Name="CouponProductTypes" EntityType="Self.CouponProductType" />
+          <EntitySet Name="CouponTypes" EntityType="Self.CouponType" />
+          <EntitySet Name="CouponValues" EntityType="Self.CouponValue" />
+          <EntitySet Name="creditcard_request" EntityType="Self.creditcard_request" />
+          <EntitySet Name="GenerateTokens" EntityType="Self.GenerateToken" />
+          <EntitySet Name="invoice_request" EntityType="Self.invoice_request" />
+          <EntitySet Name="logs" EntityType="Self.log" />
+          <EntitySet Name="other_request" EntityType="Self.other_request" />
+          <EntitySet Name="PaymentAPIActionLogs" EntityType="Self.PaymentAPIActionLog" />
+          <EntitySet Name="PaymentAPIAuthStatus" EntityType="Self.PaymentAPIAuthStatu" />
+          <EntitySet Name="PaymentAuthLogs" EntityType="Self.PaymentAuthLog" />
+          <EntitySet Name="portal_userpanel_admin" EntityType="Self.portal_userpanel_admin" />
+          <EntitySet Name="portal_userpanel_roles" EntityType="Self.portal_userpanel_roles" />
+          <EntitySet Name="ProcessVouchersUploads" EntityType="Self.ProcessVouchersUpload" />
+          <EntitySet Name="token_generate" EntityType="Self.token_generate" />
+          <EntitySet Name="token_request" EntityType="Self.token_request" />
+          <EntitySet Name="transaction_agency" EntityType="Self.transaction_agency" />
+          <EntitySet Name="transaction_agent" EntityType="Self.transaction_agent" />
+          <EntitySet Name="transaction_car" EntityType="Self.transaction_car" />
+          <EntitySet Name="transaction_cruise" EntityType="Self.transaction_cruise" />
+          <EntitySet Name="transaction_error_log" EntityType="Self.transaction_error_log" />
+          <EntitySet Name="transaction_excursion" EntityType="Self.transaction_excursion" />
+          <EntitySet Name="transaction_hotel" EntityType="Self.transaction_hotel" />
+          <EntitySet Name="transaction_inbound" EntityType="Self.transaction_inbound" />
+          <EntitySet Name="transaction_master" EntityType="Self.transaction_master" />
+          <EntitySet Name="transaction_outbound" EntityType="Self.transaction_outbound" />
+          <EntitySet Name="transaction_passenger" EntityType="Self.transaction_passenger" />
+          <EntitySet Name="transaction_pnr" EntityType="Self.transaction_pnr" />
+          <EntitySet Name="transaction_shipping" EntityType="Self.transaction_shipping" />
+          <EntitySet Name="Transaction_Update" EntityType="Self.Transaction_Update" />
+          <EntitySet Name="VoucherCampaigns" EntityType="Self.VoucherCampaign" />
+          <EntitySet Name="VoucherGenerations" EntityType="Self.VoucherGeneration" />
+          <EntitySet Name="VoucherMasters" EntityType="Self.VoucherMaster" />
+          <EntitySet Name="voucher_request" EntityType="Self.voucher_request" />
+          <EntitySet Name="VouchersUploads" EntityType="Self.VouchersUpload" />
+          <EntitySet Name="VoucherTables" EntityType="Self.VoucherTable" />
+          <EntitySet Name="API_Auth" EntityType="Self.API_Auth" />
+          <EntitySet Name="CertificateMasterBckups" EntityType="Self.CertificateMasterBckup" />
+          <EntitySet Name="CertificateTables" EntityType="Self.CertificateTable" />
+          <EntitySet Name="crm_pages" EntityType="Self.crm_pages" />
+          <EntitySet Name="portal_functions" EntityType="Self.portal_functions" />
+          <EntitySet Name="portal_modules" EntityType="Self.portal_modules" />
+          <EntitySet Name="portal_role_function_access" EntityType="Self.portal_role_function_access" />
+          <EntitySet Name="portal_userpanel_APIUsers" EntityType="Self.portal_userpanel_APIUsers" />
+          <EntitySet Name="VoucherMasterBckups" EntityType="Self.VoucherMasterBckup" />
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_portal_VoucherCampaign_portal_CouponBrand" Association="Self.FK_portal_VoucherCampaign_portal_CouponBrand">
+            <End Role="CouponBrand" EntitySet="CouponBrands" />
+            <End Role="VoucherCampaign" EntitySet="VoucherCampaigns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_portal_VoucherCampaign_portal_CouponCategory" Association="Self.FK_portal_VoucherCampaign_portal_CouponCategory">
+            <End Role="CouponCategory" EntitySet="CouponCategories" />
+            <End Role="VoucherCampaign" EntitySet="VoucherCampaigns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_portal_VoucherCampaign_portal_CouponFunding" Association="Self.FK_portal_VoucherCampaign_portal_CouponFunding">
+            <End Role="CouponFunding" EntitySet="CouponFundings" />
+            <End Role="VoucherCampaign" EntitySet="VoucherCampaigns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_portal_VoucherCampaign_portal_CouponTypes" Association="Self.FK_portal_VoucherCampaign_portal_CouponTypes">
+            <End Role="CouponTypes" EntitySet="CouponTypes" />
+            <End Role="VoucherCampaign" EntitySet="VoucherCampaigns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProcessVouchersUpload_VouchersUpload" Association="Self.FK_ProcessVouchersUpload_VouchersUpload">
+            <End Role="VouchersUpload" EntitySet="VouchersUploads" />
+            <End Role="ProcessVouchersUpload" EntitySet="ProcessVouchersUploads" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
+        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="sunwingVouchersModelStoreContainer" CdmEntityContainer="SunwingVouchersEntities">
+        <EntityContainerMapping StorageEntityContainer="SunwingVouchersModelStoreContainer" CdmEntityContainer="SunwingVouchersEntities">
+          <EntitySetMapping Name="API_UploadStatus">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.API_UploadStatus">
+              <MappingFragment StoreEntitySet="API_UploadStatus">
+                <ScalarProperty Name="Upload_Id" ColumnName="Upload_Id" />
+                <ScalarProperty Name="Upload_Status" ColumnName="Upload_Status" />
+                <ScalarProperty Name="Upload_Detail" ColumnName="Upload_Detail" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="APIActionLogs">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.APIActionLog">
+              <MappingFragment StoreEntitySet="APIActionLog">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="APIAuthStatus">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.APIAuthStatu">
+              <MappingFragment StoreEntitySet="APIAuthStatus">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EnteredUserName" ColumnName="EnteredUserName" />
+                <ScalarProperty Name="EnteredPassword" ColumnName="EnteredPassword" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ApiUsers">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.ApiUser">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.ApiUser">
               <MappingFragment StoreEntitySet="ApiUsers">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
@@ -2703,1107 +2753,1076 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="API_UploadStatus">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.API_UploadStatus">
-              <MappingFragment StoreEntitySet="API_UploadStatus">
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="Upload_Detail" ColumnName="Upload_Detail" />
-                <ScalarProperty Name="Upload_Status" ColumnName="Upload_Status" />
-                <ScalarProperty Name="Upload_Id" ColumnName="Upload_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="APIActionLogs">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.APIActionLog">
-              <MappingFragment StoreEntitySet="APIActionLog">
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Data" ColumnName="Data" />
-                <ScalarProperty Name="Action" ColumnName="Action" />
-                <ScalarProperty Name="Token" ColumnName="Token" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="APIAuthStatus">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.APIAuthStatu">
-              <MappingFragment StoreEntitySet="APIAuthStatus">
-                <ScalarProperty Name="Token" ColumnName="Token" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="EnteredPassword" ColumnName="EnteredPassword" />
-                <ScalarProperty Name="EnteredUserName" ColumnName="EnteredUserName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AspNetRoles">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.AspNetRole">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.AspNetRole">
               <MappingFragment StoreEntitySet="AspNetRoles">
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserClaims">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.AspNetUserClaim">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.AspNetUserClaim">
               <MappingFragment StoreEntitySet="AspNetUserClaims">
-                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
-                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserLogins">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.AspNetUserLogin">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.AspNetUserLogin">
               <MappingFragment StoreEntitySet="AspNetUserLogins">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
                 <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUsers">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.AspNetUser">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
-                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
-                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
-                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
-                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
-                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
-                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Last_Modified" ColumnName="Last_Modified" />
-                <ScalarProperty Name="Auth" ColumnName="Auth" />
-                <ScalarProperty Name="FamilyName" ColumnName="FamilyName" />
-                <ScalarProperty Name="GivenName" ColumnName="GivenName" />
-                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="GivenName" ColumnName="GivenName" />
+                <ScalarProperty Name="FamilyName" ColumnName="FamilyName" />
+                <ScalarProperty Name="Auth" ColumnName="Auth" />
+                <ScalarProperty Name="Last_Modified" ColumnName="Last_Modified" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AuthLogs">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.AuthLog">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.AuthLog">
               <MappingFragment StoreEntitySet="AuthLog">
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Token" ColumnName="Token" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BlackOutDates">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.BlackOutDate">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.BlackOutDate">
               <MappingFragment StoreEntitySet="BlackOutDates">
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CardInfoes">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.CardInfo">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.CardInfo">
               <MappingFragment StoreEntitySet="CardInfo">
-                <ScalarProperty Name="phone" ColumnName="phone" />
-                <ScalarProperty Name="postal" ColumnName="postal" />
-                <ScalarProperty Name="expire_date" ColumnName="expire-date" />
-                <ScalarProperty Name="expire_year" ColumnName="expire-year" />
-                <ScalarProperty Name="card_holder" ColumnName="card-holder" />
-                <ScalarProperty Name="cvv" ColumnName="cvv" />
-                <ScalarProperty Name="card_number" ColumnName="card-number" />
-                <ScalarProperty Name="Token_Id" ColumnName="Token-Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Token_Id" ColumnName="Token-Id" />
+                <ScalarProperty Name="card_number" ColumnName="card-number" />
+                <ScalarProperty Name="cvv" ColumnName="cvv" />
+                <ScalarProperty Name="card_holder" ColumnName="card-holder" />
+                <ScalarProperty Name="expire_year" ColumnName="expire-year" />
+                <ScalarProperty Name="expire_date" ColumnName="expire-date" />
+                <ScalarProperty Name="postal" ColumnName="postal" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CertificateMasters">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.CertificateMaster">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.CertificateMaster">
               <MappingFragment StoreEntitySet="CertificateMaster">
-                <ScalarProperty Name="FullName" ColumnName="FullName" />
-                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
-                <ScalarProperty Name="DateVoid" ColumnName="DateVoid" />
-                <ScalarProperty Name="UseDate" ColumnName="UseDate" />
-                <ScalarProperty Name="UseRezId" ColumnName="UseRezId" />
-                <ScalarProperty Name="Updated" ColumnName="Updated" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="status" ColumnName="status" />
-                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
-                <ScalarProperty Name="IssueDate" ColumnName="IssueDate" />
-                <ScalarProperty Name="ExclProduct" ColumnName="ExclProduct" />
-                <ScalarProperty Name="IncProduct" ColumnName="IncProduct" />
-                <ScalarProperty Name="CertificateValue" ColumnName="CertificateValue" />
-                <ScalarProperty Name="CertificateAmount" ColumnName="CertificateAmount" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="CertificateId" ColumnName="CertificateId" />
-                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
+                <ScalarProperty Name="CertificateId" ColumnName="CertificateId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="CertificateAmount" ColumnName="CertificateAmount" />
+                <ScalarProperty Name="CertificateValue" ColumnName="CertificateValue" />
+                <ScalarProperty Name="IncProduct" ColumnName="IncProduct" />
+                <ScalarProperty Name="ExclProduct" ColumnName="ExclProduct" />
+                <ScalarProperty Name="IssueDate" ColumnName="IssueDate" />
+                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="UseRezId" ColumnName="UseRezId" />
+                <ScalarProperty Name="UseDate" ColumnName="UseDate" />
+                <ScalarProperty Name="DateVoid" ColumnName="DateVoid" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="certificate_request">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.certificate_request">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.certificate_request">
               <MappingFragment StoreEntitySet="certificate-request">
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="number" ColumnName="number" />
-                <ScalarProperty Name="burn" ColumnName="burn" />
-                <ScalarProperty Name="pend" ColumnName="pend" />
-                <ScalarProperty Name="fullname" ColumnName="fullname" />
-                <ScalarProperty Name="burn_timestamp" ColumnName="burn-timestamp" />
-                <ScalarProperty Name="void_timestamp" ColumnName="void-timestamp" />
-                <ScalarProperty Name="pend_timestamp" ColumnName="pend-timestamp" />
                 <ScalarProperty Name="token_id" ColumnName="token-id" />
+                <ScalarProperty Name="pend_timestamp" ColumnName="pend-timestamp" />
+                <ScalarProperty Name="void_timestamp" ColumnName="void-timestamp" />
+                <ScalarProperty Name="burn_timestamp" ColumnName="burn-timestamp" />
+                <ScalarProperty Name="fullname" ColumnName="fullname" />
+                <ScalarProperty Name="pend" ColumnName="pend" />
+                <ScalarProperty Name="burn" ColumnName="burn" />
+                <ScalarProperty Name="number" ColumnName="number" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="cheque_request">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.cheque_request">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.cheque_request">
               <MappingFragment StoreEntitySet="cheque-request">
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Number" ColumnName="Number" />
-                <ScalarProperty Name="fullname" ColumnName="fullname" />
                 <ScalarProperty Name="token_id" ColumnName="token-id" />
+                <ScalarProperty Name="fullname" ColumnName="fullname" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CouponBrands">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.CouponBrand">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.CouponBrand">
               <MappingFragment StoreEntitySet="CouponBrand">
-                <ScalarProperty Name="Updated" ColumnName="Updated" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Brandimage" ColumnName="Brandimage" />
-                <ScalarProperty Name="BrandName" ColumnName="BrandName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="BrandName" ColumnName="BrandName" />
+                <ScalarProperty Name="Brandimage" ColumnName="Brandimage" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CouponCategories">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.CouponCategory">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.CouponCategory">
               <MappingFragment StoreEntitySet="CouponCategory">
-                <ScalarProperty Name="PayCommission" ColumnName="PayCommission" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Updated" ColumnName="Updated" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="CouponPrefix" ColumnName="CouponPrefix" />
-                <ScalarProperty Name="Category" ColumnName="Category" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="CouponPrefix" ColumnName="CouponPrefix" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="PayCommission" ColumnName="PayCommission" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CouponFundings">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.CouponFunding">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.CouponFunding">
               <MappingFragment StoreEntitySet="CouponFunding">
-                <ScalarProperty Name="Updated" ColumnName="Updated" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Department" ColumnName="Department" />
-                <ScalarProperty Name="GlCode" ColumnName="GlCode" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="GlCode" ColumnName="GlCode" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CouponGenerations">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.CouponGeneration">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.CouponGeneration">
               <MappingFragment StoreEntitySet="CouponGeneration">
-                <ScalarProperty Name="Gateway" ColumnName="Gateway" />
-                <ScalarProperty Name="DateOfFlight" ColumnName="DateOfFlight" />
-                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
-                <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
-                <ScalarProperty Name="Approved" ColumnName="Approved" />
-                <ScalarProperty Name="Distributed" ColumnName="Distributed" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Distribution" ColumnName="Distribution" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Campaign_Id" ColumnName="Campaign_Id" />
-                <ScalarProperty Name="Generation_Id" ColumnName="Generation_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Generation_Id" ColumnName="Generation_Id" />
+                <ScalarProperty Name="Campaign_Id" ColumnName="Campaign_Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Distribution" ColumnName="Distribution" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Distributed" ColumnName="Distributed" />
+                <ScalarProperty Name="Approved" ColumnName="Approved" />
+                <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
+                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
+                <ScalarProperty Name="DateOfFlight" ColumnName="DateOfFlight" />
+                <ScalarProperty Name="Gateway" ColumnName="Gateway" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CouponProducts">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.CouponProduct">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.CouponProduct">
               <MappingFragment StoreEntitySet="CouponProduct">
-                <ScalarProperty Name="ProductTypeId" ColumnName="ProductTypeId" />
-                <ScalarProperty Name="Updated" ColumnName="Updated" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="status" ColumnName="status" />
-                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="ProductTypeId" ColumnName="ProductTypeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CouponProductTypes">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.CouponProductType">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.CouponProductType">
               <MappingFragment StoreEntitySet="CouponProductType">
-                <ScalarProperty Name="dbAirportCode" ColumnName="dbAirportCode" />
-                <ScalarProperty Name="dbAirlineName" ColumnName="dbAirlineName" />
-                <ScalarProperty Name="dbFlightNumber" ColumnName="dbFlightNumber" />
-                <ScalarProperty Name="dbHotelChain" ColumnName="dbHotelChain" />
-                <ScalarProperty Name="dbHotelName" ColumnName="dbHotelName" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="dbStatusValue" ColumnName="dbStatusValue" />
-                <ScalarProperty Name="dbStatusCode" ColumnName="dbStatusCode" />
-                <ScalarProperty Name="dbCountryCode" ColumnName="dbCountryCode" />
-                <ScalarProperty Name="dbProductName" ColumnName="dbProductName" />
-                <ScalarProperty Name="dbProductCode" ColumnName="dbProductCode" />
-                <ScalarProperty Name="dbTable" ColumnName="dbTable" />
-                <ScalarProperty Name="dbName" ColumnName="dbName" />
-                <ScalarProperty Name="dbPwd" ColumnName="dbPwd" />
-                <ScalarProperty Name="dbUser" ColumnName="dbUser" />
-                <ScalarProperty Name="ProductType" ColumnName="ProductType" />
-                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="ProductType" ColumnName="ProductType" />
+                <ScalarProperty Name="dbUser" ColumnName="dbUser" />
+                <ScalarProperty Name="dbPwd" ColumnName="dbPwd" />
+                <ScalarProperty Name="dbName" ColumnName="dbName" />
+                <ScalarProperty Name="dbTable" ColumnName="dbTable" />
+                <ScalarProperty Name="dbProductCode" ColumnName="dbProductCode" />
+                <ScalarProperty Name="dbProductName" ColumnName="dbProductName" />
+                <ScalarProperty Name="dbCountryCode" ColumnName="dbCountryCode" />
+                <ScalarProperty Name="dbStatusCode" ColumnName="dbStatusCode" />
+                <ScalarProperty Name="dbStatusValue" ColumnName="dbStatusValue" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="dbHotelName" ColumnName="dbHotelName" />
+                <ScalarProperty Name="dbHotelChain" ColumnName="dbHotelChain" />
+                <ScalarProperty Name="dbFlightNumber" ColumnName="dbFlightNumber" />
+                <ScalarProperty Name="dbAirlineName" ColumnName="dbAirlineName" />
+                <ScalarProperty Name="dbAirportCode" ColumnName="dbAirportCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CouponTypes">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.CouponType">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.CouponType">
               <MappingFragment StoreEntitySet="CouponTypes">
-                <ScalarProperty Name="Updated" ColumnName="Updated" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CouponValues">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.CouponValue">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.CouponValue">
               <MappingFragment StoreEntitySet="CouponValue">
-                <ScalarProperty Name="Updated" ColumnName="Updated" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="Label" ColumnName="Label" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Label" ColumnName="Label" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="creditcard_request">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.creditcard_request">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.creditcard_request">
               <MappingFragment StoreEntitySet="creditcard-request">
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="force_avs_check" ColumnName="force-avs-check" />
-                <ScalarProperty Name="force_cvv_check" ColumnName="force-cvv-check" />
-                <ScalarProperty Name="force_auth_code" ColumnName="force-auth-code" />
-                <ScalarProperty Name="force_card_expireMM" ColumnName="force-card-expireMM" />
-                <ScalarProperty Name="force_card_expireYY" ColumnName="force-card-expireYY" />
-                <ScalarProperty Name="force_card_amount" ColumnName="force-card-amount" />
-                <ScalarProperty Name="force_card_type" ColumnName="force-card-type" />
-                <ScalarProperty Name="forceclose" ColumnName="forceclose" />
-                <ScalarProperty Name="pre_avs_check" ColumnName="pre-avs-check" />
-                <ScalarProperty Name="pre_cvv_check" ColumnName="pre-cvv-check" />
-                <ScalarProperty Name="pre_auth_code" ColumnName="pre-auth-code" />
-                <ScalarProperty Name="pre_card_expireMM" ColumnName="pre-card-expireMM" />
-                <ScalarProperty Name="pre_card_expireYY" ColumnName="pre-card-expireYY" />
-                <ScalarProperty Name="pre_card_amount" ColumnName="pre-card-amount" />
-                <ScalarProperty Name="pre_card_type" ColumnName="pre-card-type" />
-                <ScalarProperty Name="preauth" ColumnName="preauth" />
-                <ScalarProperty Name="card_token" ColumnName="card-token" />
-                <ScalarProperty Name="phone" ColumnName="phone" />
-                <ScalarProperty Name="postal" ColumnName="postal" />
-                <ScalarProperty Name="state" ColumnName="state" />
-                <ScalarProperty Name="city" ColumnName="city" />
-                <ScalarProperty Name="address2" ColumnName="address2" />
-                <ScalarProperty Name="address" ColumnName="address" />
-                <ScalarProperty Name="expireMM" ColumnName="expireMM" />
-                <ScalarProperty Name="expireYY" ColumnName="expireYY" />
-                <ScalarProperty Name="cvv" ColumnName="cvv" />
-                <ScalarProperty Name="card_number" ColumnName="card-number" />
-                <ScalarProperty Name="fullname" ColumnName="fullname" />
-                <ScalarProperty Name="force_timestamp" ColumnName="force-timestamp" />
-                <ScalarProperty Name="void_timestamp" ColumnName="void-timestamp" />
-                <ScalarProperty Name="pre_timestamp" ColumnName="pre-timestamp" />
                 <ScalarProperty Name="token_id" ColumnName="token-id" />
+                <ScalarProperty Name="pre_timestamp" ColumnName="pre-timestamp" />
+                <ScalarProperty Name="void_timestamp" ColumnName="void-timestamp" />
+                <ScalarProperty Name="force_timestamp" ColumnName="force-timestamp" />
+                <ScalarProperty Name="fullname" ColumnName="fullname" />
+                <ScalarProperty Name="card_number" ColumnName="card-number" />
+                <ScalarProperty Name="cvv" ColumnName="cvv" />
+                <ScalarProperty Name="expireYY" ColumnName="expireYY" />
+                <ScalarProperty Name="expireMM" ColumnName="expireMM" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="address2" ColumnName="address2" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="postal" ColumnName="postal" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="card_token" ColumnName="card-token" />
+                <ScalarProperty Name="preauth" ColumnName="preauth" />
+                <ScalarProperty Name="pre_card_type" ColumnName="pre-card-type" />
+                <ScalarProperty Name="pre_card_amount" ColumnName="pre-card-amount" />
+                <ScalarProperty Name="pre_card_expireYY" ColumnName="pre-card-expireYY" />
+                <ScalarProperty Name="pre_card_expireMM" ColumnName="pre-card-expireMM" />
+                <ScalarProperty Name="pre_auth_code" ColumnName="pre-auth-code" />
+                <ScalarProperty Name="pre_cvv_check" ColumnName="pre-cvv-check" />
+                <ScalarProperty Name="pre_avs_check" ColumnName="pre-avs-check" />
+                <ScalarProperty Name="forceclose" ColumnName="forceclose" />
+                <ScalarProperty Name="force_card_type" ColumnName="force-card-type" />
+                <ScalarProperty Name="force_card_amount" ColumnName="force-card-amount" />
+                <ScalarProperty Name="force_card_expireYY" ColumnName="force-card-expireYY" />
+                <ScalarProperty Name="force_card_expireMM" ColumnName="force-card-expireMM" />
+                <ScalarProperty Name="force_auth_code" ColumnName="force-auth-code" />
+                <ScalarProperty Name="force_cvv_check" ColumnName="force-cvv-check" />
+                <ScalarProperty Name="force_avs_check" ColumnName="force-avs-check" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="GenerateTokens">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.GenerateToken">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.GenerateToken">
               <MappingFragment StoreEntitySet="GenerateToken">
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Token" ColumnName="Token" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="invoice_request">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.invoice_request">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.invoice_request">
               <MappingFragment StoreEntitySet="invoice-request">
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Number" ColumnName="Number" />
-                <ScalarProperty Name="fullname" ColumnName="fullname" />
                 <ScalarProperty Name="token_id" ColumnName="token-id" />
+                <ScalarProperty Name="fullname" ColumnName="fullname" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="logs">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.log">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.log">
               <MappingFragment StoreEntitySet="log">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="action" ColumnName="action" />
-                <ScalarProperty Name="token_id" ColumnName="token-id" />
-                <ScalarProperty Name="request_details" ColumnName="request-details" />
-                <ScalarProperty Name="request_type" ColumnName="request-type" />
                 <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+                <ScalarProperty Name="request_type" ColumnName="request-type" />
+                <ScalarProperty Name="request_details" ColumnName="request-details" />
+                <ScalarProperty Name="token_id" ColumnName="token-id" />
+                <ScalarProperty Name="action" ColumnName="action" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="other_request">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.other_request">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.other_request">
               <MappingFragment StoreEntitySet="other-request">
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="type" ColumnName="type" />
-                <ScalarProperty Name="fullname" ColumnName="fullname" />
-                <ScalarProperty Name="force_timestamp" ColumnName="force-timestamp" />
-                <ScalarProperty Name="preauth_timestamp" ColumnName="preauth-timestamp" />
                 <ScalarProperty Name="token_id" ColumnName="token-id" />
+                <ScalarProperty Name="preauth_timestamp" ColumnName="preauth-timestamp" />
+                <ScalarProperty Name="force_timestamp" ColumnName="force-timestamp" />
+                <ScalarProperty Name="fullname" ColumnName="fullname" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PaymentAPIActionLogs">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.PaymentAPIActionLog">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.PaymentAPIActionLog">
               <MappingFragment StoreEntitySet="PaymentAPIActionLog">
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Data" ColumnName="Data" />
-                <ScalarProperty Name="Action" ColumnName="Action" />
-                <ScalarProperty Name="Token" ColumnName="Token" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PaymentAPIAuthStatus">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.PaymentAPIAuthStatu">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.PaymentAPIAuthStatu">
               <MappingFragment StoreEntitySet="PaymentAPIAuthStatus">
-                <ScalarProperty Name="Token" ColumnName="Token" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="EnteredPassword" ColumnName="EnteredPassword" />
-                <ScalarProperty Name="EnteredUserName" ColumnName="EnteredUserName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EnteredUserName" ColumnName="EnteredUserName" />
+                <ScalarProperty Name="EnteredPassword" ColumnName="EnteredPassword" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PaymentAuthLogs">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.PaymentAuthLog">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.PaymentAuthLog">
               <MappingFragment StoreEntitySet="PaymentAuthLog">
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Token" ColumnName="Token" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="portal_userpanel_admin">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.portal_userpanel_admin">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.portal_userpanel_admin">
               <MappingFragment StoreEntitySet="portal_userpanel_admin">
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="last_modified" ColumnName="last_modified" />
-                <ScalarProperty Name="role_id" ColumnName="role_id" />
-                <ScalarProperty Name="auth" ColumnName="auth" />
-                <ScalarProperty Name="familyname" ColumnName="familyname" />
-                <ScalarProperty Name="givenname" ColumnName="givenname" />
-                <ScalarProperty Name="password" ColumnName="password" />
-                <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="givenname" ColumnName="givenname" />
+                <ScalarProperty Name="familyname" ColumnName="familyname" />
+                <ScalarProperty Name="auth" ColumnName="auth" />
+                <ScalarProperty Name="role_id" ColumnName="role_id" />
+                <ScalarProperty Name="last_modified" ColumnName="last_modified" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="portal_userpanel_roles">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.portal_userpanel_roles">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.portal_userpanel_roles">
               <MappingFragment StoreEntitySet="portal_userpanel_roles">
-                <ScalarProperty Name="last_modified" ColumnName="last_modified" />
-                <ScalarProperty Name="functions" ColumnName="functions" />
-                <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="functions" ColumnName="functions" />
+                <ScalarProperty Name="last_modified" ColumnName="last_modified" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProcessVouchersUploads">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.ProcessVouchersUpload">
+              <MappingFragment StoreEntitySet="ProcessVouchersUpload">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UploadId" ColumnName="UploadId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="IsEmailSent" ColumnName="IsEmailSent" />
+                <ScalarProperty Name="IsPdfSent" ColumnName="IsPdfSent" />
+                <ScalarProperty Name="ErrorMsg" ColumnName="ErrorMsg" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModefiedOn" ColumnName="ModefiedOn" />
+                <ScalarProperty Name="ModefiedBy" ColumnName="ModefiedBy" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="token_generate">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.token_generate">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.token_generate">
               <MappingFragment StoreEntitySet="token_generate">
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Token" ColumnName="Token" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="token_request">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.token_request">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.token_request">
               <MappingFragment StoreEntitySet="token-request">
-                <ScalarProperty Name="product_codes" ColumnName="product-codes" />
-                <ScalarProperty Name="brand_id" ColumnName="brand-id" />
-                <ScalarProperty Name="return_date" ColumnName="return-date" />
-                <ScalarProperty Name="depart_date" ColumnName="depart-date" />
-                <ScalarProperty Name="booking_number" ColumnName="booking-number" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="business_type" ColumnName="business-type" />
-                <ScalarProperty Name="device_address" ColumnName="device-address" />
-                <ScalarProperty Name="device_indicator" ColumnName="device-indicator" />
-                <ScalarProperty Name="device_cookie" ColumnName="device-cookie" />
-                <ScalarProperty Name="taxes_included" ColumnName="taxes-included" />
-                <ScalarProperty Name="transaction_taxes" ColumnName="transaction-taxes" />
-                <ScalarProperty Name="transaction_total" ColumnName="transaction-total" />
-                <ScalarProperty Name="transaction_type" ColumnName="transaction-type" />
-                <ScalarProperty Name="transaction_id" ColumnName="transaction-id" />
-                <ScalarProperty Name="token_timestamp" ColumnName="token-timestamp" />
                 <ScalarProperty Name="token_id" ColumnName="token-id" />
+                <ScalarProperty Name="token_timestamp" ColumnName="token-timestamp" />
+                <ScalarProperty Name="transaction_id" ColumnName="transaction-id" />
+                <ScalarProperty Name="transaction_type" ColumnName="transaction-type" />
+                <ScalarProperty Name="transaction_total" ColumnName="transaction-total" />
+                <ScalarProperty Name="transaction_taxes" ColumnName="transaction-taxes" />
+                <ScalarProperty Name="taxes_included" ColumnName="taxes-included" />
+                <ScalarProperty Name="device_cookie" ColumnName="device-cookie" />
+                <ScalarProperty Name="device_indicator" ColumnName="device-indicator" />
+                <ScalarProperty Name="device_address" ColumnName="device-address" />
+                <ScalarProperty Name="business_type" ColumnName="business-type" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="booking_number" ColumnName="booking-number" />
+                <ScalarProperty Name="depart_date" ColumnName="depart-date" />
+                <ScalarProperty Name="return_date" ColumnName="return-date" />
+                <ScalarProperty Name="brand_id" ColumnName="brand-id" />
+                <ScalarProperty Name="product_codes" ColumnName="product-codes" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="transaction_agency">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.transaction_agency">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.transaction_agency">
               <MappingFragment StoreEntitySet="transaction-agency">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="agency_type" ColumnName="agency-type" />
-                <ScalarProperty Name="agency_consortium" ColumnName="agency-consortium" />
-                <ScalarProperty Name="agency_email" ColumnName="agency-email" />
-                <ScalarProperty Name="agency_country" ColumnName="agency-country" />
-                <ScalarProperty Name="agency_state" ColumnName="agency-state" />
-                <ScalarProperty Name="agency_city" ColumnName="agency-city" />
-                <ScalarProperty Name="agency_postal" ColumnName="agency-postal" />
-                <ScalarProperty Name="agency_address2" ColumnName="agency-address2" />
-                <ScalarProperty Name="agency_address" ColumnName="agency-address" />
-                <ScalarProperty Name="agency_name" ColumnName="agency-name" />
-                <ScalarProperty Name="agency_code" ColumnName="agency-code" />
-                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
                 <ScalarProperty Name="token_id" ColumnName="token-id" />
+                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
+                <ScalarProperty Name="agency_code" ColumnName="agency-code" />
+                <ScalarProperty Name="agency_name" ColumnName="agency-name" />
+                <ScalarProperty Name="agency_address" ColumnName="agency-address" />
+                <ScalarProperty Name="agency_address2" ColumnName="agency-address2" />
+                <ScalarProperty Name="agency_postal" ColumnName="agency-postal" />
+                <ScalarProperty Name="agency_city" ColumnName="agency-city" />
+                <ScalarProperty Name="agency_state" ColumnName="agency-state" />
+                <ScalarProperty Name="agency_country" ColumnName="agency-country" />
+                <ScalarProperty Name="agency_email" ColumnName="agency-email" />
+                <ScalarProperty Name="agency_consortium" ColumnName="agency-consortium" />
+                <ScalarProperty Name="agency_type" ColumnName="agency-type" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="transaction_agent">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.transaction_agent">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.transaction_agent">
               <MappingFragment StoreEntitySet="transaction-agent">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="wings_postal" ColumnName="wings-postal" />
-                <ScalarProperty Name="wings_country" ColumnName="wings-country" />
-                <ScalarProperty Name="wings_region" ColumnName="wings-region" />
-                <ScalarProperty Name="wings_city" ColumnName="wings-city" />
-                <ScalarProperty Name="wings_address2" ColumnName="wings-address2" />
-                <ScalarProperty Name="wings_address" ColumnName="wings-address" />
-                <ScalarProperty Name="wings_last" ColumnName="wings-last" />
-                <ScalarProperty Name="wings_middle" ColumnName="wings-middle" />
-                <ScalarProperty Name="wings_first" ColumnName="wings-first" />
-                <ScalarProperty Name="wings_email" ColumnName="wings-email" />
-                <ScalarProperty Name="wings_campaign" ColumnName="wings-campaign" />
-                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
                 <ScalarProperty Name="token_id" ColumnName="token-id" />
+                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
+                <ScalarProperty Name="wings_campaign" ColumnName="wings-campaign" />
+                <ScalarProperty Name="wings_email" ColumnName="wings-email" />
+                <ScalarProperty Name="wings_first" ColumnName="wings-first" />
+                <ScalarProperty Name="wings_middle" ColumnName="wings-middle" />
+                <ScalarProperty Name="wings_last" ColumnName="wings-last" />
+                <ScalarProperty Name="wings_address" ColumnName="wings-address" />
+                <ScalarProperty Name="wings_address2" ColumnName="wings-address2" />
+                <ScalarProperty Name="wings_city" ColumnName="wings-city" />
+                <ScalarProperty Name="wings_region" ColumnName="wings-region" />
+                <ScalarProperty Name="wings_country" ColumnName="wings-country" />
+                <ScalarProperty Name="wings_postal" ColumnName="wings-postal" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="transaction_car">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.transaction_car">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.transaction_car">
               <MappingFragment StoreEntitySet="transaction-car">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="rental_tax" ColumnName="rental-tax" />
-                <ScalarProperty Name="rental_total" ColumnName="rental-total" />
-                <ScalarProperty Name="return_country" ColumnName="return-country" />
-                <ScalarProperty Name="return_postal" ColumnName="return-postal" />
-                <ScalarProperty Name="return_state" ColumnName="return-state" />
-                <ScalarProperty Name="return_phone" ColumnName="return-phone" />
-                <ScalarProperty Name="return_address" ColumnName="return-address" />
-                <ScalarProperty Name="return_datetime" ColumnName="return-datetime" />
-                <ScalarProperty Name="return_location" ColumnName="return-location" />
-                <ScalarProperty Name="pickup_country" ColumnName="pickup-country" />
-                <ScalarProperty Name="pickup_postal" ColumnName="pickup-postal" />
-                <ScalarProperty Name="pickup_state" ColumnName="pickup-state" />
-                <ScalarProperty Name="pickup_phone" ColumnName="pickup-phone" />
-                <ScalarProperty Name="pickup_address" ColumnName="pickup-address" />
-                <ScalarProperty Name="pickup_datetime" ColumnName="pickup-datetime" />
-                <ScalarProperty Name="pickup_location" ColumnName="pickup-location" />
-                <ScalarProperty Name="rental_company" ColumnName="rental-company" />
-                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
                 <ScalarProperty Name="token_id" ColumnName="token-id" />
+                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
+                <ScalarProperty Name="rental_company" ColumnName="rental-company" />
+                <ScalarProperty Name="pickup_location" ColumnName="pickup-location" />
+                <ScalarProperty Name="pickup_datetime" ColumnName="pickup-datetime" />
+                <ScalarProperty Name="pickup_address" ColumnName="pickup-address" />
+                <ScalarProperty Name="pickup_phone" ColumnName="pickup-phone" />
+                <ScalarProperty Name="pickup_state" ColumnName="pickup-state" />
+                <ScalarProperty Name="pickup_postal" ColumnName="pickup-postal" />
+                <ScalarProperty Name="pickup_country" ColumnName="pickup-country" />
+                <ScalarProperty Name="return_location" ColumnName="return-location" />
+                <ScalarProperty Name="return_datetime" ColumnName="return-datetime" />
+                <ScalarProperty Name="return_address" ColumnName="return-address" />
+                <ScalarProperty Name="return_phone" ColumnName="return-phone" />
+                <ScalarProperty Name="return_state" ColumnName="return-state" />
+                <ScalarProperty Name="return_postal" ColumnName="return-postal" />
+                <ScalarProperty Name="return_country" ColumnName="return-country" />
+                <ScalarProperty Name="rental_total" ColumnName="rental-total" />
+                <ScalarProperty Name="rental_tax" ColumnName="rental-tax" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="transaction_cruise">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.transaction_cruise">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.transaction_cruise">
               <MappingFragment StoreEntitySet="transaction-cruise">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="cruise_datetime" ColumnName="cruise-datetime" />
-                <ScalarProperty Name="cruise_tax" ColumnName="cruise-tax" />
-                <ScalarProperty Name="cruise_amount" ColumnName="cruise-amount" />
-                <ScalarProperty Name="cruise_duration" ColumnName="cruise-duration" />
-                <ScalarProperty Name="cruise_poc_resort" ColumnName="cruise-poc-resort" />
-                <ScalarProperty Name="cruise_name" ColumnName="cruise-name" />
-                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
                 <ScalarProperty Name="token_id" ColumnName="token-id" />
+                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
+                <ScalarProperty Name="cruise_name" ColumnName="cruise-name" />
+                <ScalarProperty Name="cruise_poc_resort" ColumnName="cruise-poc-resort" />
+                <ScalarProperty Name="cruise_duration" ColumnName="cruise-duration" />
+                <ScalarProperty Name="cruise_amount" ColumnName="cruise-amount" />
+                <ScalarProperty Name="cruise_tax" ColumnName="cruise-tax" />
+                <ScalarProperty Name="cruise_datetime" ColumnName="cruise-datetime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="transaction_error_log">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.transaction_error_log">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.transaction_error_log">
               <MappingFragment StoreEntitySet="transaction-error-log">
-                <ScalarProperty Name="error_text_sp" ColumnName="error-text-sp" />
-                <ScalarProperty Name="error_text_fr" ColumnName="error-text-fr" />
-                <ScalarProperty Name="error_text_en" ColumnName="error-text-en" />
-                <ScalarProperty Name="error_num" ColumnName="error-num" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="error_num" ColumnName="error-num" />
+                <ScalarProperty Name="error_text_en" ColumnName="error-text-en" />
+                <ScalarProperty Name="error_text_fr" ColumnName="error-text-fr" />
+                <ScalarProperty Name="error_text_sp" ColumnName="error-text-sp" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="transaction_excursion">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.transaction_excursion">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.transaction_excursion">
               <MappingFragment StoreEntitySet="transaction-excursion">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="excursion_tax" ColumnName="excursion-tax" />
-                <ScalarProperty Name="excursion_amount" ColumnName="excursion-amount" />
-                <ScalarProperty Name="excursion_datetime" ColumnName="excursion-datetime" />
-                <ScalarProperty Name="excursion_location" ColumnName="excursion-location" />
-                <ScalarProperty Name="excursion_supplier" ColumnName="excursion-supplier" />
-                <ScalarProperty Name="excursion_name" ColumnName="excursion-name" />
-                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
                 <ScalarProperty Name="token_id" ColumnName="token-id" />
+                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
+                <ScalarProperty Name="excursion_name" ColumnName="excursion-name" />
+                <ScalarProperty Name="excursion_supplier" ColumnName="excursion-supplier" />
+                <ScalarProperty Name="excursion_location" ColumnName="excursion-location" />
+                <ScalarProperty Name="excursion_datetime" ColumnName="excursion-datetime" />
+                <ScalarProperty Name="excursion_amount" ColumnName="excursion-amount" />
+                <ScalarProperty Name="excursion_tax" ColumnName="excursion-tax" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="transaction_hotel">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.transaction_hotel">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.transaction_hotel">
               <MappingFragment StoreEntitySet="transaction-hotel">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="hotel_tax" ColumnName="hotel-tax" />
-                <ScalarProperty Name="hotel_total" ColumnName="hotel-total" />
-                <ScalarProperty Name="hotel_checkout_datetime" ColumnName="hotel-checkout-datetime" />
-                <ScalarProperty Name="hotel_checkin_datetime" ColumnName="hotel-checkin-datetime" />
-                <ScalarProperty Name="hotel_country" ColumnName="hotel-country" />
-                <ScalarProperty Name="hotel_longitude" ColumnName="hotel-longitude" />
-                <ScalarProperty Name="hotel_latitude" ColumnName="hotel-latitude" />
-                <ScalarProperty Name="hotel_postal" ColumnName="hotel-postal" />
-                <ScalarProperty Name="hotel_state" ColumnName="hotel-state" />
-                <ScalarProperty Name="hotel_city_" ColumnName="hotel-city&#x9;" />
-                <ScalarProperty Name="hotel_phone" ColumnName="hotel-phone" />
-                <ScalarProperty Name="hotel_address" ColumnName="hotel-address" />
-                <ScalarProperty Name="hotel_name" ColumnName="hotel-name" />
-                <ScalarProperty Name="hotel_provider" ColumnName="hotel-provider" />
-                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
                 <ScalarProperty Name="token_id" ColumnName="token-id" />
+                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
+                <ScalarProperty Name="hotel_provider" ColumnName="hotel-provider" />
+                <ScalarProperty Name="hotel_name" ColumnName="hotel-name" />
+                <ScalarProperty Name="hotel_address" ColumnName="hotel-address" />
+                <ScalarProperty Name="hotel_phone" ColumnName="hotel-phone" />
+                <ScalarProperty Name="hotel_city_" ColumnName="hotel-city&#x9;" />
+                <ScalarProperty Name="hotel_state" ColumnName="hotel-state" />
+                <ScalarProperty Name="hotel_postal" ColumnName="hotel-postal" />
+                <ScalarProperty Name="hotel_latitude" ColumnName="hotel-latitude" />
+                <ScalarProperty Name="hotel_longitude" ColumnName="hotel-longitude" />
+                <ScalarProperty Name="hotel_country" ColumnName="hotel-country" />
+                <ScalarProperty Name="hotel_checkin_datetime" ColumnName="hotel-checkin-datetime" />
+                <ScalarProperty Name="hotel_checkout_datetime" ColumnName="hotel-checkout-datetime" />
+                <ScalarProperty Name="hotel_total" ColumnName="hotel-total" />
+                <ScalarProperty Name="hotel_tax" ColumnName="hotel-tax" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="transaction_inbound">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.transaction_inbound">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.transaction_inbound">
               <MappingFragment StoreEntitySet="transaction-inbound">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="arrival_airport" ColumnName="arrival-airport" />
-                <ScalarProperty Name="arrival_city" ColumnName="arrival-city" />
-                <ScalarProperty Name="arrival_datetime" ColumnName="arrival-datetime" />
-                <ScalarProperty Name="departure_airport_" ColumnName="departure-airport&#x9;" />
-                <ScalarProperty Name="departure_city" ColumnName="departure-city" />
-                <ScalarProperty Name="departure_datetime" ColumnName="departure-datetime" />
-                <ScalarProperty Name="flight_number" ColumnName="flight-number" />
-                <ScalarProperty Name="airline_name" ColumnName="airline-name" />
-                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
                 <ScalarProperty Name="token_id" ColumnName="token-id" />
+                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
+                <ScalarProperty Name="airline_name" ColumnName="airline-name" />
+                <ScalarProperty Name="flight_number" ColumnName="flight-number" />
+                <ScalarProperty Name="departure_datetime" ColumnName="departure-datetime" />
+                <ScalarProperty Name="departure_city" ColumnName="departure-city" />
+                <ScalarProperty Name="departure_airport_" ColumnName="departure-airport&#x9;" />
+                <ScalarProperty Name="arrival_datetime" ColumnName="arrival-datetime" />
+                <ScalarProperty Name="arrival_city" ColumnName="arrival-city" />
+                <ScalarProperty Name="arrival_airport" ColumnName="arrival-airport" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="transaction_master">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.transaction_master">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.transaction_master">
               <MappingFragment StoreEntitySet="transaction-master">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="transmit_flag" ColumnName="transmit-flag" />
-                <ScalarProperty Name="transmit_timestamp" ColumnName="transmit-timestamp" />
-                <ScalarProperty Name="last_update_timestamp" ColumnName="last-update-timestamp" />
-                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
                 <ScalarProperty Name="token_id" ColumnName="token-id" />
+                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
+                <ScalarProperty Name="last_update_timestamp" ColumnName="last-update-timestamp" />
+                <ScalarProperty Name="transmit_timestamp" ColumnName="transmit-timestamp" />
+                <ScalarProperty Name="transmit_flag" ColumnName="transmit-flag" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="transaction_outbound">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.transaction_outbound">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.transaction_outbound">
               <MappingFragment StoreEntitySet="transaction-outbound">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="arrival_airport" ColumnName="arrival-airport" />
-                <ScalarProperty Name="arrival_city" ColumnName="arrival-city" />
-                <ScalarProperty Name="arrival_datetime" ColumnName="arrival-datetime" />
-                <ScalarProperty Name="departure_airport" ColumnName="departure-airport" />
-                <ScalarProperty Name="departure_city" ColumnName="departure-city" />
-                <ScalarProperty Name="departure_datetime" ColumnName="departure-datetime" />
-                <ScalarProperty Name="flight_number" ColumnName="flight-number" />
-                <ScalarProperty Name="airline_name" ColumnName="airline-name" />
-                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
                 <ScalarProperty Name="token_id" ColumnName="token-id" />
+                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
+                <ScalarProperty Name="airline_name" ColumnName="airline-name" />
+                <ScalarProperty Name="flight_number" ColumnName="flight-number" />
+                <ScalarProperty Name="departure_datetime" ColumnName="departure-datetime" />
+                <ScalarProperty Name="departure_city" ColumnName="departure-city" />
+                <ScalarProperty Name="departure_airport" ColumnName="departure-airport" />
+                <ScalarProperty Name="arrival_datetime" ColumnName="arrival-datetime" />
+                <ScalarProperty Name="arrival_city" ColumnName="arrival-city" />
+                <ScalarProperty Name="arrival_airport" ColumnName="arrival-airport" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="transaction_passenger">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.transaction_passenger">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.transaction_passenger">
               <MappingFragment StoreEntitySet="transaction-passenger">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="passenger_loyalty" ColumnName="passenger-loyalty" />
-                <ScalarProperty Name="passenger_phone" ColumnName="passenger-phone" />
-                <ScalarProperty Name="passenger_email" ColumnName="passenger-email" />
-                <ScalarProperty Name="passenger_last" ColumnName="passenger-last" />
-                <ScalarProperty Name="passenger_middle" ColumnName="passenger-middle" />
-                <ScalarProperty Name="passenger_first_" ColumnName="passenger-first&#x9;" />
-                <ScalarProperty Name="passenger_title" ColumnName="passenger-title" />
-                <ScalarProperty Name="passenger_dob" ColumnName="passenger-dob" />
-                <ScalarProperty Name="total_amount" ColumnName="total-amount" />
-                <ScalarProperty Name="ticket_class" ColumnName="ticket-class" />
-                <ScalarProperty Name="ticket_number" ColumnName="ticket-number" />
-                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
                 <ScalarProperty Name="token_id" ColumnName="token-id" />
+                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
+                <ScalarProperty Name="ticket_number" ColumnName="ticket-number" />
+                <ScalarProperty Name="ticket_class" ColumnName="ticket-class" />
+                <ScalarProperty Name="total_amount" ColumnName="total-amount" />
+                <ScalarProperty Name="passenger_dob" ColumnName="passenger-dob" />
+                <ScalarProperty Name="passenger_title" ColumnName="passenger-title" />
+                <ScalarProperty Name="passenger_first_" ColumnName="passenger-first&#x9;" />
+                <ScalarProperty Name="passenger_middle" ColumnName="passenger-middle" />
+                <ScalarProperty Name="passenger_last" ColumnName="passenger-last" />
+                <ScalarProperty Name="passenger_email" ColumnName="passenger-email" />
+                <ScalarProperty Name="passenger_phone" ColumnName="passenger-phone" />
+                <ScalarProperty Name="passenger_loyalty" ColumnName="passenger-loyalty" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="transaction_pnr">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.transaction_pnr">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.transaction_pnr">
               <MappingFragment StoreEntitySet="transaction-pnr">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="pnr_group_flag" ColumnName="pnr-group-flag" />
-                <ScalarProperty Name="pnr_trip_type" ColumnName="pnr-trip-type" />
-                <ScalarProperty Name="pnr_extra_fees" ColumnName="pnr-extra-fees" />
-                <ScalarProperty Name="pnr_total" ColumnName="pnr-total" />
-                <ScalarProperty Name="pnr_number" ColumnName="pnr-number" />
-                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
                 <ScalarProperty Name="token_id" ColumnName="token-id" />
+                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
+                <ScalarProperty Name="pnr_number" ColumnName="pnr-number" />
+                <ScalarProperty Name="pnr_total" ColumnName="pnr-total" />
+                <ScalarProperty Name="pnr_extra_fees" ColumnName="pnr-extra-fees" />
+                <ScalarProperty Name="pnr_trip_type" ColumnName="pnr-trip-type" />
+                <ScalarProperty Name="pnr_group_flag" ColumnName="pnr-group-flag" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="transaction_shipping">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.transaction_shipping">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.transaction_shipping">
               <MappingFragment StoreEntitySet="transaction-shipping">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="shipping_phone" ColumnName="shipping-phone" />
-                <ScalarProperty Name="shipping_country" ColumnName="shipping-country" />
-                <ScalarProperty Name="shipping_postal" ColumnName="shipping-postal" />
-                <ScalarProperty Name="shipping_state" ColumnName="shipping-state" />
-                <ScalarProperty Name="shipping_city" ColumnName="shipping-city" />
-                <ScalarProperty Name="shipping_address2" ColumnName="shipping-address2" />
-                <ScalarProperty Name="shipping_address" ColumnName="shipping-address" />
-                <ScalarProperty Name="shipping_email" ColumnName="shipping-email" />
-                <ScalarProperty Name="shipping_last" ColumnName="shipping-last" />
-                <ScalarProperty Name="shipping_middle" ColumnName="shipping-middle" />
-                <ScalarProperty Name="shipping_first" ColumnName="shipping-first" />
-                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
                 <ScalarProperty Name="token_id" ColumnName="token-id" />
+                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
+                <ScalarProperty Name="shipping_first" ColumnName="shipping-first" />
+                <ScalarProperty Name="shipping_middle" ColumnName="shipping-middle" />
+                <ScalarProperty Name="shipping_last" ColumnName="shipping-last" />
+                <ScalarProperty Name="shipping_email" ColumnName="shipping-email" />
+                <ScalarProperty Name="shipping_address" ColumnName="shipping-address" />
+                <ScalarProperty Name="shipping_address2" ColumnName="shipping-address2" />
+                <ScalarProperty Name="shipping_city" ColumnName="shipping-city" />
+                <ScalarProperty Name="shipping_state" ColumnName="shipping-state" />
+                <ScalarProperty Name="shipping_postal" ColumnName="shipping-postal" />
+                <ScalarProperty Name="shipping_country" ColumnName="shipping-country" />
+                <ScalarProperty Name="shipping_phone" ColumnName="shipping-phone" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Transaction_Update">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.Transaction_Update">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.Transaction_Update">
               <MappingFragment StoreEntitySet="Transaction-Update">
-                <ScalarProperty Name="update_timestamp" ColumnName="update-timestamp" />
-                <ScalarProperty Name="incall" ColumnName="incall" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="shipping_phone" ColumnName="shipping-phone" />
-                <ScalarProperty Name="shipping_country" ColumnName="shipping-country" />
-                <ScalarProperty Name="shipping_postal" ColumnName="shipping-postal" />
-                <ScalarProperty Name="shipping_state" ColumnName="shipping-state" />
-                <ScalarProperty Name="shipping_city" ColumnName="shipping-city" />
-                <ScalarProperty Name="shipping_address2" ColumnName="shipping-address2" />
-                <ScalarProperty Name="shipping_address" ColumnName="shipping-address" />
-                <ScalarProperty Name="shipping_email" ColumnName="shipping-email" />
-                <ScalarProperty Name="shipping_last" ColumnName="shipping-last" />
-                <ScalarProperty Name="shipping_middle" ColumnName="shipping-middle" />
-                <ScalarProperty Name="shipping_first" ColumnName="shipping-first" />
-                <ScalarProperty Name="pnr_group_flag" ColumnName="pnr-group-flag" />
-                <ScalarProperty Name="pnr_trip_type" ColumnName="pnr-trip-type" />
-                <ScalarProperty Name="pnr_extra_fees" ColumnName="pnr-extra-fees" />
-                <ScalarProperty Name="pnr_total" ColumnName="pnr-total" />
-                <ScalarProperty Name="pnr_number" ColumnName="pnr-number" />
-                <ScalarProperty Name="passenger_loyalty" ColumnName="passenger-loyalty" />
-                <ScalarProperty Name="passenger_phone" ColumnName="passenger-phone" />
-                <ScalarProperty Name="passenger_email" ColumnName="passenger-email" />
-                <ScalarProperty Name="passenger_last" ColumnName="passenger-last" />
-                <ScalarProperty Name="passenger_middle" ColumnName="passenger-middle" />
-                <ScalarProperty Name="passenger_first" ColumnName="passenger-first" />
-                <ScalarProperty Name="passenger_title" ColumnName="passenger-title" />
-                <ScalarProperty Name="passenger_dob" ColumnName="passenger-dob" />
-                <ScalarProperty Name="total_amount" ColumnName="total-amount" />
-                <ScalarProperty Name="ticket_class" ColumnName="ticket-class" />
-                <ScalarProperty Name="ticket_number" ColumnName="ticket-number" />
-                <ScalarProperty Name="outarrival_airport" ColumnName="outarrival-airport" />
-                <ScalarProperty Name="outarrival_city" ColumnName="outarrival-city" />
-                <ScalarProperty Name="outarrival_datetime" ColumnName="outarrival-datetime" />
-                <ScalarProperty Name="outdeparture_airport" ColumnName="outdeparture-airport" />
-                <ScalarProperty Name="outdeparture_city" ColumnName="outdeparture-city" />
-                <ScalarProperty Name="outdeparture_datetime" ColumnName="outdeparture-datetime" />
-                <ScalarProperty Name="outflight_number" ColumnName="outflight-number" />
-                <ScalarProperty Name="outairline_name" ColumnName="outairline-name" />
-                <ScalarProperty Name="inarrival_airport" ColumnName="inarrival-airport" />
-                <ScalarProperty Name="inarrival_city" ColumnName="inarrival-city" />
-                <ScalarProperty Name="inarrival_datetime" ColumnName="inarrival-datetime" />
-                <ScalarProperty Name="indeparture_airport" ColumnName="indeparture-airport" />
-                <ScalarProperty Name="indeparture_city" ColumnName="indeparture-city" />
-                <ScalarProperty Name="indeparture_datetime" ColumnName="indeparture-datetime" />
-                <ScalarProperty Name="inflight_number" ColumnName="inflight-number" />
-                <ScalarProperty Name="inairline_name" ColumnName="inairline-name" />
-                <ScalarProperty Name="hotel_tax" ColumnName="hotel-tax" />
-                <ScalarProperty Name="hotel_total" ColumnName="hotel-total" />
-                <ScalarProperty Name="hotel_checkout_datetime" ColumnName="hotel-checkout-datetime" />
-                <ScalarProperty Name="hotel_checkin_datetime" ColumnName="hotel-checkin-datetime" />
-                <ScalarProperty Name="hotel_country" ColumnName="hotel-country" />
-                <ScalarProperty Name="hotel_longitude" ColumnName="hotel-longitude" />
-                <ScalarProperty Name="hotel_latitude" ColumnName="hotel-latitude" />
-                <ScalarProperty Name="hotel_postal" ColumnName="hotel-postal" />
-                <ScalarProperty Name="hotel_state" ColumnName="hotel-state" />
-                <ScalarProperty Name="hotel_city" ColumnName="hotel-city" />
-                <ScalarProperty Name="hotel_phone" ColumnName="hotel-phone" />
-                <ScalarProperty Name="hotel_address" ColumnName="hotel-address" />
-                <ScalarProperty Name="hotel_name" ColumnName="hotel-name" />
-                <ScalarProperty Name="hotel_provider" ColumnName="hotel-provider" />
-                <ScalarProperty Name="excursion_tax" ColumnName="excursion-tax" />
-                <ScalarProperty Name="excursion_amount" ColumnName="excursion-amount" />
-                <ScalarProperty Name="excursion_datetime" ColumnName="excursion-datetime" />
-                <ScalarProperty Name="excursion_location" ColumnName="excursion-location" />
-                <ScalarProperty Name="excursion_supplier" ColumnName="excursion-supplier" />
-                <ScalarProperty Name="excursion_name" ColumnName="excursion-name" />
-                <ScalarProperty Name="cruise_datetime" ColumnName="cruise-datetime" />
-                <ScalarProperty Name="cruise_tax" ColumnName="cruise-tax" />
-                <ScalarProperty Name="cruise_amount" ColumnName="cruise-amount" />
-                <ScalarProperty Name="cruise_duration" ColumnName="cruise-duration" />
-                <ScalarProperty Name="cruise_poc_resort" ColumnName="cruise-poc-resort" />
-                <ScalarProperty Name="cruise_name" ColumnName="cruise-name" />
-                <ScalarProperty Name="rental_tax" ColumnName="rental-tax" />
-                <ScalarProperty Name="rental_total" ColumnName="rental-total" />
-                <ScalarProperty Name="return_country" ColumnName="return-country" />
-                <ScalarProperty Name="return_postal" ColumnName="return-postal" />
-                <ScalarProperty Name="return_state" ColumnName="return-state" />
-                <ScalarProperty Name="return_phone" ColumnName="return-phone" />
-                <ScalarProperty Name="return_address" ColumnName="return-address" />
-                <ScalarProperty Name="return_datetime" ColumnName="return-datetime" />
-                <ScalarProperty Name="return_location" ColumnName="return-location" />
-                <ScalarProperty Name="pickup_country" ColumnName="pickup-country" />
-                <ScalarProperty Name="pickup_postal" ColumnName="pickup-postal" />
-                <ScalarProperty Name="pickup_state" ColumnName="pickup-state" />
-                <ScalarProperty Name="pickup_phone" ColumnName="pickup-phone" />
-                <ScalarProperty Name="pickup_address" ColumnName="pickup-address" />
-                <ScalarProperty Name="pickup_datetime" ColumnName="pickup-datetime" />
-                <ScalarProperty Name="pickup_location" ColumnName="pickup-location" />
-                <ScalarProperty Name="rental_company" ColumnName="rental-company" />
-                <ScalarProperty Name="wings_postal" ColumnName="wings-postal" />
-                <ScalarProperty Name="wings_country" ColumnName="wings-country" />
-                <ScalarProperty Name="wings_region" ColumnName="wings-region" />
-                <ScalarProperty Name="wings_city" ColumnName="wings-city" />
-                <ScalarProperty Name="wings_address2" ColumnName="wings-address2" />
-                <ScalarProperty Name="wings_address" ColumnName="wings-address" />
-                <ScalarProperty Name="wings_last" ColumnName="wings-last" />
-                <ScalarProperty Name="wings_middle" ColumnName="wings-middle" />
-                <ScalarProperty Name="wings_first" ColumnName="wings-first" />
-                <ScalarProperty Name="wings_email" ColumnName="wings-email" />
-                <ScalarProperty Name="wings_campaign" ColumnName="wings-campaign" />
-                <ScalarProperty Name="agency_type" ColumnName="agency-type" />
-                <ScalarProperty Name="agency_consortium" ColumnName="agency-consortium" />
-                <ScalarProperty Name="agency_email" ColumnName="agency-email" />
-                <ScalarProperty Name="agency_country" ColumnName="agency-country" />
-                <ScalarProperty Name="agency_state" ColumnName="agency-state" />
-                <ScalarProperty Name="agency_city" ColumnName="agency-city" />
-                <ScalarProperty Name="agency_postal" ColumnName="agency-postal" />
-                <ScalarProperty Name="agency_address2" ColumnName="agency-address2" />
-                <ScalarProperty Name="agency_address" ColumnName="agency-address" />
-                <ScalarProperty Name="agency_name" ColumnName="agency-name" />
-                <ScalarProperty Name="agency_code" ColumnName="agency-code" />
-                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
                 <ScalarProperty Name="token" ColumnName="token" />
+                <ScalarProperty Name="create_timestamp" ColumnName="create-timestamp" />
+                <ScalarProperty Name="agency_code" ColumnName="agency-code" />
+                <ScalarProperty Name="agency_name" ColumnName="agency-name" />
+                <ScalarProperty Name="agency_address" ColumnName="agency-address" />
+                <ScalarProperty Name="agency_address2" ColumnName="agency-address2" />
+                <ScalarProperty Name="agency_postal" ColumnName="agency-postal" />
+                <ScalarProperty Name="agency_city" ColumnName="agency-city" />
+                <ScalarProperty Name="agency_state" ColumnName="agency-state" />
+                <ScalarProperty Name="agency_country" ColumnName="agency-country" />
+                <ScalarProperty Name="agency_email" ColumnName="agency-email" />
+                <ScalarProperty Name="agency_consortium" ColumnName="agency-consortium" />
+                <ScalarProperty Name="agency_type" ColumnName="agency-type" />
+                <ScalarProperty Name="wings_campaign" ColumnName="wings-campaign" />
+                <ScalarProperty Name="wings_email" ColumnName="wings-email" />
+                <ScalarProperty Name="wings_first" ColumnName="wings-first" />
+                <ScalarProperty Name="wings_middle" ColumnName="wings-middle" />
+                <ScalarProperty Name="wings_last" ColumnName="wings-last" />
+                <ScalarProperty Name="wings_address" ColumnName="wings-address" />
+                <ScalarProperty Name="wings_address2" ColumnName="wings-address2" />
+                <ScalarProperty Name="wings_city" ColumnName="wings-city" />
+                <ScalarProperty Name="wings_region" ColumnName="wings-region" />
+                <ScalarProperty Name="wings_country" ColumnName="wings-country" />
+                <ScalarProperty Name="wings_postal" ColumnName="wings-postal" />
+                <ScalarProperty Name="rental_company" ColumnName="rental-company" />
+                <ScalarProperty Name="pickup_location" ColumnName="pickup-location" />
+                <ScalarProperty Name="pickup_datetime" ColumnName="pickup-datetime" />
+                <ScalarProperty Name="pickup_address" ColumnName="pickup-address" />
+                <ScalarProperty Name="pickup_phone" ColumnName="pickup-phone" />
+                <ScalarProperty Name="pickup_state" ColumnName="pickup-state" />
+                <ScalarProperty Name="pickup_postal" ColumnName="pickup-postal" />
+                <ScalarProperty Name="pickup_country" ColumnName="pickup-country" />
+                <ScalarProperty Name="return_location" ColumnName="return-location" />
+                <ScalarProperty Name="return_datetime" ColumnName="return-datetime" />
+                <ScalarProperty Name="return_address" ColumnName="return-address" />
+                <ScalarProperty Name="return_phone" ColumnName="return-phone" />
+                <ScalarProperty Name="return_state" ColumnName="return-state" />
+                <ScalarProperty Name="return_postal" ColumnName="return-postal" />
+                <ScalarProperty Name="return_country" ColumnName="return-country" />
+                <ScalarProperty Name="rental_total" ColumnName="rental-total" />
+                <ScalarProperty Name="rental_tax" ColumnName="rental-tax" />
+                <ScalarProperty Name="cruise_name" ColumnName="cruise-name" />
+                <ScalarProperty Name="cruise_poc_resort" ColumnName="cruise-poc-resort" />
+                <ScalarProperty Name="cruise_duration" ColumnName="cruise-duration" />
+                <ScalarProperty Name="cruise_amount" ColumnName="cruise-amount" />
+                <ScalarProperty Name="cruise_tax" ColumnName="cruise-tax" />
+                <ScalarProperty Name="cruise_datetime" ColumnName="cruise-datetime" />
+                <ScalarProperty Name="excursion_name" ColumnName="excursion-name" />
+                <ScalarProperty Name="excursion_supplier" ColumnName="excursion-supplier" />
+                <ScalarProperty Name="excursion_location" ColumnName="excursion-location" />
+                <ScalarProperty Name="excursion_datetime" ColumnName="excursion-datetime" />
+                <ScalarProperty Name="excursion_amount" ColumnName="excursion-amount" />
+                <ScalarProperty Name="excursion_tax" ColumnName="excursion-tax" />
+                <ScalarProperty Name="hotel_provider" ColumnName="hotel-provider" />
+                <ScalarProperty Name="hotel_name" ColumnName="hotel-name" />
+                <ScalarProperty Name="hotel_address" ColumnName="hotel-address" />
+                <ScalarProperty Name="hotel_phone" ColumnName="hotel-phone" />
+                <ScalarProperty Name="hotel_city" ColumnName="hotel-city" />
+                <ScalarProperty Name="hotel_state" ColumnName="hotel-state" />
+                <ScalarProperty Name="hotel_postal" ColumnName="hotel-postal" />
+                <ScalarProperty Name="hotel_latitude" ColumnName="hotel-latitude" />
+                <ScalarProperty Name="hotel_longitude" ColumnName="hotel-longitude" />
+                <ScalarProperty Name="hotel_country" ColumnName="hotel-country" />
+                <ScalarProperty Name="hotel_checkin_datetime" ColumnName="hotel-checkin-datetime" />
+                <ScalarProperty Name="hotel_checkout_datetime" ColumnName="hotel-checkout-datetime" />
+                <ScalarProperty Name="hotel_total" ColumnName="hotel-total" />
+                <ScalarProperty Name="hotel_tax" ColumnName="hotel-tax" />
+                <ScalarProperty Name="inairline_name" ColumnName="inairline-name" />
+                <ScalarProperty Name="inflight_number" ColumnName="inflight-number" />
+                <ScalarProperty Name="indeparture_datetime" ColumnName="indeparture-datetime" />
+                <ScalarProperty Name="indeparture_city" ColumnName="indeparture-city" />
+                <ScalarProperty Name="indeparture_airport" ColumnName="indeparture-airport" />
+                <ScalarProperty Name="inarrival_datetime" ColumnName="inarrival-datetime" />
+                <ScalarProperty Name="inarrival_city" ColumnName="inarrival-city" />
+                <ScalarProperty Name="inarrival_airport" ColumnName="inarrival-airport" />
+                <ScalarProperty Name="outairline_name" ColumnName="outairline-name" />
+                <ScalarProperty Name="outflight_number" ColumnName="outflight-number" />
+                <ScalarProperty Name="outdeparture_datetime" ColumnName="outdeparture-datetime" />
+                <ScalarProperty Name="outdeparture_city" ColumnName="outdeparture-city" />
+                <ScalarProperty Name="outdeparture_airport" ColumnName="outdeparture-airport" />
+                <ScalarProperty Name="outarrival_datetime" ColumnName="outarrival-datetime" />
+                <ScalarProperty Name="outarrival_city" ColumnName="outarrival-city" />
+                <ScalarProperty Name="outarrival_airport" ColumnName="outarrival-airport" />
+                <ScalarProperty Name="ticket_number" ColumnName="ticket-number" />
+                <ScalarProperty Name="ticket_class" ColumnName="ticket-class" />
+                <ScalarProperty Name="total_amount" ColumnName="total-amount" />
+                <ScalarProperty Name="passenger_dob" ColumnName="passenger-dob" />
+                <ScalarProperty Name="passenger_title" ColumnName="passenger-title" />
+                <ScalarProperty Name="passenger_first" ColumnName="passenger-first" />
+                <ScalarProperty Name="passenger_middle" ColumnName="passenger-middle" />
+                <ScalarProperty Name="passenger_last" ColumnName="passenger-last" />
+                <ScalarProperty Name="passenger_email" ColumnName="passenger-email" />
+                <ScalarProperty Name="passenger_phone" ColumnName="passenger-phone" />
+                <ScalarProperty Name="passenger_loyalty" ColumnName="passenger-loyalty" />
+                <ScalarProperty Name="pnr_number" ColumnName="pnr-number" />
+                <ScalarProperty Name="pnr_total" ColumnName="pnr-total" />
+                <ScalarProperty Name="pnr_extra_fees" ColumnName="pnr-extra-fees" />
+                <ScalarProperty Name="pnr_trip_type" ColumnName="pnr-trip-type" />
+                <ScalarProperty Name="pnr_group_flag" ColumnName="pnr-group-flag" />
+                <ScalarProperty Name="shipping_first" ColumnName="shipping-first" />
+                <ScalarProperty Name="shipping_middle" ColumnName="shipping-middle" />
+                <ScalarProperty Name="shipping_last" ColumnName="shipping-last" />
+                <ScalarProperty Name="shipping_email" ColumnName="shipping-email" />
+                <ScalarProperty Name="shipping_address" ColumnName="shipping-address" />
+                <ScalarProperty Name="shipping_address2" ColumnName="shipping-address2" />
+                <ScalarProperty Name="shipping_city" ColumnName="shipping-city" />
+                <ScalarProperty Name="shipping_state" ColumnName="shipping-state" />
+                <ScalarProperty Name="shipping_postal" ColumnName="shipping-postal" />
+                <ScalarProperty Name="shipping_country" ColumnName="shipping-country" />
+                <ScalarProperty Name="shipping_phone" ColumnName="shipping-phone" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="incall" ColumnName="incall" />
+                <ScalarProperty Name="update_timestamp" ColumnName="update-timestamp" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="VoucherCampaigns">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.VoucherCampaign">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.VoucherCampaign">
               <MappingFragment StoreEntitySet="VoucherCampaign">
-                <ScalarProperty Name="ReturnDate" ColumnName="ReturnDate" />
-                <ScalarProperty Name="DepartDate" ColumnName="DepartDate" />
-                <ScalarProperty Name="token" ColumnName="token" />
-                <ScalarProperty Name="urlFrench" ColumnName="urlFrench" />
-                <ScalarProperty Name="urlEnglish" ColumnName="urlEnglish" />
-                <ScalarProperty Name="htmlFrench" ColumnName="htmlFrench" />
-                <ScalarProperty Name="htmlEnglish" ColumnName="htmlEnglish" />
-                <ScalarProperty Name="Updated" ColumnName="Updated" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="value" ColumnName="value" />
-                <ScalarProperty Name="exclProduct" ColumnName="exclProduct" />
-                <ScalarProperty Name="incProduct" ColumnName="incProduct" />
-                <ScalarProperty Name="CampaignName" ColumnName="CampaignName" />
-                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="FundingId" ColumnName="FundingId" />
-                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="FundingId" ColumnName="FundingId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+                <ScalarProperty Name="CampaignName" ColumnName="CampaignName" />
+                <ScalarProperty Name="incProduct" ColumnName="incProduct" />
+                <ScalarProperty Name="exclProduct" ColumnName="exclProduct" />
+                <ScalarProperty Name="value" ColumnName="value" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="htmlEnglish" ColumnName="htmlEnglish" />
+                <ScalarProperty Name="htmlFrench" ColumnName="htmlFrench" />
+                <ScalarProperty Name="urlEnglish" ColumnName="urlEnglish" />
+                <ScalarProperty Name="urlFrench" ColumnName="urlFrench" />
+                <ScalarProperty Name="token" ColumnName="token" />
+                <ScalarProperty Name="DepartDate" ColumnName="DepartDate" />
+                <ScalarProperty Name="ReturnDate" ColumnName="ReturnDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="VoucherGenerations">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.VoucherGeneration">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.VoucherGeneration">
               <MappingFragment StoreEntitySet="VoucherGeneration">
-                <ScalarProperty Name="DepartureDate" ColumnName="DepartureDate" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
-                <ScalarProperty Name="Upload_Detail" ColumnName="Upload_Detail" />
-                <ScalarProperty Name="Upload_Status" ColumnName="Upload_Status" />
-                <ScalarProperty Name="Distributed" ColumnName="Distributed" />
-                <ScalarProperty Name="Approved" ColumnName="Approved" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Coupons" ColumnName="Coupons" />
-                <ScalarProperty Name="Distribution" ColumnName="Distribution" />
-                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
+                <ScalarProperty Name="Distribution" ColumnName="Distribution" />
+                <ScalarProperty Name="Coupons" ColumnName="Coupons" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Approved" ColumnName="Approved" />
+                <ScalarProperty Name="Distributed" ColumnName="Distributed" />
+                <ScalarProperty Name="Upload_Status" ColumnName="Upload_Status" />
+                <ScalarProperty Name="Upload_Detail" ColumnName="Upload_Detail" />
+                <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="DepartureDate" ColumnName="DepartureDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="VoucherMasters">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.VoucherMaster">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.VoucherMaster">
               <MappingFragment StoreEntitySet="VoucherMaster">
-                <ScalarProperty Name="FullName" ColumnName="FullName" />
-                <ScalarProperty Name="Generation_Id" ColumnName="Generation_Id" />
-                <ScalarProperty Name="VoucherValue" ColumnName="VoucherValue" />
-                <ScalarProperty Name="DateVoid" ColumnName="DateVoid" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="FundingId" ColumnName="FundingId" />
-                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
-                <ScalarProperty Name="Updated" ColumnName="Updated" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="UseTaxesIncluded" ColumnName="UseTaxesIncluded" />
-                <ScalarProperty Name="UseSaleAmount" ColumnName="UseSaleAmount" />
-                <ScalarProperty Name="UseRezId" ColumnName="UseRezId" />
-                <ScalarProperty Name="UseProduct" ColumnName="UseProduct" />
-                <ScalarProperty Name="UseDate" ColumnName="UseDate" />
-                <ScalarProperty Name="Expirydate" ColumnName="Expirydate" />
-                <ScalarProperty Name="IssueDate" ColumnName="IssueDate" />
-                <ScalarProperty Name="exclProduct" ColumnName="exclProduct" />
-                <ScalarProperty Name="incProduct" ColumnName="incProduct" />
-                <ScalarProperty Name="VoucherAmount" ColumnName="VoucherAmount" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
-                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
+                <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="VoucherAmount" ColumnName="VoucherAmount" />
+                <ScalarProperty Name="incProduct" ColumnName="incProduct" />
+                <ScalarProperty Name="exclProduct" ColumnName="exclProduct" />
+                <ScalarProperty Name="IssueDate" ColumnName="IssueDate" />
+                <ScalarProperty Name="Expirydate" ColumnName="Expirydate" />
+                <ScalarProperty Name="UseDate" ColumnName="UseDate" />
+                <ScalarProperty Name="UseProduct" ColumnName="UseProduct" />
+                <ScalarProperty Name="UseRezId" ColumnName="UseRezId" />
+                <ScalarProperty Name="UseSaleAmount" ColumnName="UseSaleAmount" />
+                <ScalarProperty Name="UseTaxesIncluded" ColumnName="UseTaxesIncluded" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="FundingId" ColumnName="FundingId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DateVoid" ColumnName="DateVoid" />
+                <ScalarProperty Name="VoucherValue" ColumnName="VoucherValue" />
+                <ScalarProperty Name="Generation_Id" ColumnName="Generation_Id" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="voucher_request">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.voucher_request">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.voucher_request">
               <MappingFragment StoreEntitySet="voucher-request">
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="number" ColumnName="number" />
-                <ScalarProperty Name="burn" ColumnName="burn" />
-                <ScalarProperty Name="pend" ColumnName="pend" />
-                <ScalarProperty Name="fullname" ColumnName="fullname" />
-                <ScalarProperty Name="burn_timestamp" ColumnName="burn-timestamp" />
-                <ScalarProperty Name="void_timestamp" ColumnName="void-timestamp" />
-                <ScalarProperty Name="pend_timestamp" ColumnName="pend-timestamp" />
                 <ScalarProperty Name="token_id" ColumnName="token-id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="API_Auth">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.API_Auth">
-              <MappingFragment StoreEntitySet="API_Auth">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="access_token" ColumnName="access-token" />
-                <ScalarProperty Name="updated" ColumnName="updated" />
-                <ScalarProperty Name="created" ColumnName="created" />
-                <ScalarProperty Name="partner" ColumnName="partner" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CertificateMasterBckups">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.CertificateMasterBckup">
-              <MappingFragment StoreEntitySet="CertificateMasterBckup">
-                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
-                <ScalarProperty Name="DateVoid" ColumnName="DateVoid" />
-                <ScalarProperty Name="UseDate" ColumnName="UseDate" />
-                <ScalarProperty Name="UseRezId" ColumnName="UseRezId" />
-                <ScalarProperty Name="Updated" ColumnName="Updated" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="status" ColumnName="status" />
-                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
-                <ScalarProperty Name="IssueDate" ColumnName="IssueDate" />
-                <ScalarProperty Name="ExclProduct" ColumnName="ExclProduct" />
-                <ScalarProperty Name="IncProduct" ColumnName="IncProduct" />
-                <ScalarProperty Name="CertificateValue" ColumnName="CertificateValue" />
-                <ScalarProperty Name="CertificateAmount" ColumnName="CertificateAmount" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="CertificateId" ColumnName="CertificateId" />
-                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
+                <ScalarProperty Name="pend_timestamp" ColumnName="pend-timestamp" />
+                <ScalarProperty Name="void_timestamp" ColumnName="void-timestamp" />
+                <ScalarProperty Name="burn_timestamp" ColumnName="burn-timestamp" />
+                <ScalarProperty Name="fullname" ColumnName="fullname" />
+                <ScalarProperty Name="pend" ColumnName="pend" />
+                <ScalarProperty Name="burn" ColumnName="burn" />
+                <ScalarProperty Name="number" ColumnName="number" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CertificateTables">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.CertificateTable">
-              <MappingFragment StoreEntitySet="CertificateTable">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CertificateCode" ColumnName="CertificateCode" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="crm_pages">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.crm_pages">
-              <MappingFragment StoreEntitySet="crm_pages">
-                <ScalarProperty Name="status" ColumnName="status" />
-                <ScalarProperty Name="content_es" ColumnName="content_es" />
-                <ScalarProperty Name="content_fr" ColumnName="content_fr" />
-                <ScalarProperty Name="content_en" ColumnName="content_en" />
-                <ScalarProperty Name="title_es" ColumnName="title_es" />
-                <ScalarProperty Name="title_fr" ColumnName="title_fr" />
-                <ScalarProperty Name="title_en" ColumnName="title_en" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="portal_functions">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.portal_functions">
-              <MappingFragment StoreEntitySet="portal_functions">
-                <ScalarProperty Name="target" ColumnName="target" />
-                <ScalarProperty Name="icon" ColumnName="icon" />
-                <ScalarProperty Name="title" ColumnName="title" />
-                <ScalarProperty Name="module_id" ColumnName="module_id" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="portal_modules">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.portal_modules">
-              <MappingFragment StoreEntitySet="portal_modules">
-                <ScalarProperty Name="bg_color" ColumnName="bg_color" />
-                <ScalarProperty Name="icon" ColumnName="icon" />
-                <ScalarProperty Name="title" ColumnName="title" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="portal_role_function_access">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.portal_role_function_access">
-              <MappingFragment StoreEntitySet="portal_role_function_access">
-                <ScalarProperty Name="func_active_deactive" ColumnName="func_active_deactive" />
-                <ScalarProperty Name="func_delete" ColumnName="func_delete" />
-                <ScalarProperty Name="func_edit" ColumnName="func_edit" />
-                <ScalarProperty Name="func_add" ColumnName="func_add" />
-                <ScalarProperty Name="function_id" ColumnName="function_id" />
-                <ScalarProperty Name="role_id" ColumnName="role_id" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="portal_userpanel_APIUsers">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.portal_userpanel_APIUsers">
-              <MappingFragment StoreEntitySet="portal_userpanel_APIUsers">
-                <ScalarProperty Name="last_modified" ColumnName="last_modified" />
-                <ScalarProperty Name="role_id" ColumnName="role_id" />
-                <ScalarProperty Name="auth" ColumnName="auth" />
-                <ScalarProperty Name="familyname" ColumnName="familyname" />
-                <ScalarProperty Name="givenname" ColumnName="givenname" />
-                <ScalarProperty Name="password" ColumnName="password" />
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="VoucherMasterBckups">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.VoucherMasterBckup">
-              <MappingFragment StoreEntitySet="VoucherMasterBckup">
-                <ScalarProperty Name="VoucherValue" ColumnName="VoucherValue" />
-                <ScalarProperty Name="DateVoid" ColumnName="DateVoid" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="FundingId" ColumnName="FundingId" />
-                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
-                <ScalarProperty Name="Updated" ColumnName="Updated" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="UseTaxesIncluded" ColumnName="UseTaxesIncluded" />
-                <ScalarProperty Name="UseSaleAmount" ColumnName="UseSaleAmount" />
-                <ScalarProperty Name="UseRezId" ColumnName="UseRezId" />
-                <ScalarProperty Name="UseProduct" ColumnName="UseProduct" />
-                <ScalarProperty Name="UseDate" ColumnName="UseDate" />
-                <ScalarProperty Name="Expirydate" ColumnName="Expirydate" />
-                <ScalarProperty Name="IssueDate" ColumnName="IssueDate" />
-                <ScalarProperty Name="exclProduct" ColumnName="exclProduct" />
-                <ScalarProperty Name="incProduct" ColumnName="incProduct" />
-                <ScalarProperty Name="VoucherAmount" ColumnName="VoucherAmount" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
-                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="VoucherTables">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.VoucherTable">
-              <MappingFragment StoreEntitySet="VoucherTable">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="VoucherCode" ColumnName="VoucherCode" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="AspNetUserRoles" TypeName="sunwingVouchersModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
-            <EndProperty Name="AspNetUser">
-              <ScalarProperty Name="Id" ColumnName="UserId" />
-            </EndProperty>
-            <EndProperty Name="AspNetRole">
-              <ScalarProperty Name="Id" ColumnName="RoleId" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <EntitySetMapping Name="ProcessVouchersUploads">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.ProcessVouchersUpload">
-              <MappingFragment StoreEntitySet="ProcessVouchersUpload">
-                <ScalarProperty Name="IsDeleated" ColumnName="IsDeleated" />
-                <ScalarProperty Name="ModefiedBy" ColumnName="ModefiedBy" />
-                <ScalarProperty Name="ModefiedOn" ColumnName="ModefiedOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="ErrorMsg" ColumnName="ErrorMsg" />
-                <ScalarProperty Name="IsPdfSent" ColumnName="IsPdfSent" />
-                <ScalarProperty Name="IsEmailSent" ColumnName="IsEmailSent" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="UploadId" ColumnName="UploadId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="VouchersUploads">
-            <EntityTypeMapping TypeName="sunwingVouchersModel.VouchersUpload">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.VouchersUpload">
               <MappingFragment StoreEntitySet="VouchersUpload">
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="ModefiedBy" ColumnName="ModefiedBy" />
-                <ScalarProperty Name="ModefiedOn" ColumnName="ModefiedOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UploadContent" ColumnName="UploadContent" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModefiedOn" ColumnName="ModefiedOn" />
+                <ScalarProperty Name="ModefiedBy" ColumnName="ModefiedBy" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="SuccessfullyProcessed" ColumnName="SuccessfullyProcessed" />
+                <ScalarProperty Name="NotSuccessfullyProcessed" ColumnName="NotSuccessfullyProcessed" />
+                <ScalarProperty Name="TotalProcessed" ColumnName="TotalProcessed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VoucherTables">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.VoucherTable">
+              <MappingFragment StoreEntitySet="VoucherTable">
+                <ScalarProperty Name="VoucherCode" ColumnName="VoucherCode" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="API_Auth">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.API_Auth">
+              <MappingFragment StoreEntitySet="API_Auth">
+                <ScalarProperty Name="partner" ColumnName="partner" />
+                <ScalarProperty Name="created" ColumnName="created" />
+                <ScalarProperty Name="updated" ColumnName="updated" />
+                <ScalarProperty Name="access_token" ColumnName="access-token" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CertificateMasterBckups">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.CertificateMasterBckup">
+              <MappingFragment StoreEntitySet="CertificateMasterBckup">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
+                <ScalarProperty Name="CertificateId" ColumnName="CertificateId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="CertificateAmount" ColumnName="CertificateAmount" />
+                <ScalarProperty Name="CertificateValue" ColumnName="CertificateValue" />
+                <ScalarProperty Name="IncProduct" ColumnName="IncProduct" />
+                <ScalarProperty Name="ExclProduct" ColumnName="ExclProduct" />
+                <ScalarProperty Name="IssueDate" ColumnName="IssueDate" />
+                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="UseRezId" ColumnName="UseRezId" />
+                <ScalarProperty Name="UseDate" ColumnName="UseDate" />
+                <ScalarProperty Name="DateVoid" ColumnName="DateVoid" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CertificateTables">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.CertificateTable">
+              <MappingFragment StoreEntitySet="CertificateTable">
+                <ScalarProperty Name="CertificateCode" ColumnName="CertificateCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="crm_pages">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.crm_pages">
+              <MappingFragment StoreEntitySet="crm_pages">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title_en" ColumnName="title_en" />
+                <ScalarProperty Name="title_fr" ColumnName="title_fr" />
+                <ScalarProperty Name="title_es" ColumnName="title_es" />
+                <ScalarProperty Name="content_en" ColumnName="content_en" />
+                <ScalarProperty Name="content_fr" ColumnName="content_fr" />
+                <ScalarProperty Name="content_es" ColumnName="content_es" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="portal_functions">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.portal_functions">
+              <MappingFragment StoreEntitySet="portal_functions">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="module_id" ColumnName="module_id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="icon" ColumnName="icon" />
+                <ScalarProperty Name="target" ColumnName="target" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="portal_modules">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.portal_modules">
+              <MappingFragment StoreEntitySet="portal_modules">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="icon" ColumnName="icon" />
+                <ScalarProperty Name="bg_color" ColumnName="bg_color" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="portal_role_function_access">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.portal_role_function_access">
+              <MappingFragment StoreEntitySet="portal_role_function_access">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="role_id" ColumnName="role_id" />
+                <ScalarProperty Name="function_id" ColumnName="function_id" />
+                <ScalarProperty Name="func_add" ColumnName="func_add" />
+                <ScalarProperty Name="func_edit" ColumnName="func_edit" />
+                <ScalarProperty Name="func_delete" ColumnName="func_delete" />
+                <ScalarProperty Name="func_active_deactive" ColumnName="func_active_deactive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="portal_userpanel_APIUsers">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.portal_userpanel_APIUsers">
+              <MappingFragment StoreEntitySet="portal_userpanel_APIUsers">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="givenname" ColumnName="givenname" />
+                <ScalarProperty Name="familyname" ColumnName="familyname" />
+                <ScalarProperty Name="auth" ColumnName="auth" />
+                <ScalarProperty Name="role_id" ColumnName="role_id" />
+                <ScalarProperty Name="last_modified" ColumnName="last_modified" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VoucherMasterBckups">
+            <EntityTypeMapping TypeName="SunwingVouchersModel.VoucherMasterBckup">
+              <MappingFragment StoreEntitySet="VoucherMasterBckup">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
+                <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="VoucherAmount" ColumnName="VoucherAmount" />
+                <ScalarProperty Name="incProduct" ColumnName="incProduct" />
+                <ScalarProperty Name="exclProduct" ColumnName="exclProduct" />
+                <ScalarProperty Name="IssueDate" ColumnName="IssueDate" />
+                <ScalarProperty Name="Expirydate" ColumnName="Expirydate" />
+                <ScalarProperty Name="UseDate" ColumnName="UseDate" />
+                <ScalarProperty Name="UseProduct" ColumnName="UseProduct" />
+                <ScalarProperty Name="UseRezId" ColumnName="UseRezId" />
+                <ScalarProperty Name="UseSaleAmount" ColumnName="UseSaleAmount" />
+                <ScalarProperty Name="UseTaxesIncluded" ColumnName="UseTaxesIncluded" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="FundingId" ColumnName="FundingId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DateVoid" ColumnName="DateVoid" />
+                <ScalarProperty Name="VoucherValue" ColumnName="VoucherValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="SunwingVouchersModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetRoles">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+            <EndProperty Name="AspNetUsers">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

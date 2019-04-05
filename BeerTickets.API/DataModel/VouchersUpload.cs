@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Issuance.API.DataModel
+namespace BeerTicket.API.DataModel
 {
     using System;
     using System.Collections.Generic;
@@ -27,7 +27,10 @@ namespace Issuance.API.DataModel
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> ModefiedOn { get; set; }
         public string ModefiedBy { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
+        public bool IsDeleted { get; set; }
+        public Nullable<int> SuccessfullyProcessed { get; set; }
+        public Nullable<int> NotSuccessfullyProcessed { get; set; }
+        public Nullable<int> TotalProcessed { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProcessVouchersUpload> ProcessVouchersUploads { get; set; }

@@ -1,6 +1,6 @@
-﻿namespace Issuance.API.Models
+﻿namespace BeerTicket.API.Models
 {
-    public class PayLoad
+    public class PayLoad // like base modal 
     {
         public string Token { get; set; }
         public int CampaignId { get; set; }
@@ -14,7 +14,6 @@
         public bool IsFirstRowAsColumnNames { get; set; }
 
         // for Content for bulk upload 
-
         public string base64Content { get; set; }
     }
 }

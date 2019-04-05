@@ -1,4 +1,4 @@
-Campaign Name,Type,Funding,Category,Brand,Date of Issue,Date of Expiry,Dollar Value,Total Voucher Issued,Total Voucher Used,Total Booking Value,Average Booking Value,Date Of Use,Booking Number,Booking Value
-Doug's Voucherama,DS,33333,DS,Sunwing,6/25/2018 0:00,7/3/2018 0:00,250,4,0,1,,,,250
-Fall into Savings,VO,,AB,Sunwing,10/24/2017 0:00,12/31/2017 0:00,25,62,8,547,68.38,1/1/1900 0:00,B6E95EC405E1F793ED21FBA5FC2E462968485E5DD8F41794C8AC80F50FFA0FD2,25
-Test Campaign,VO,12345,FI,Vacation Express,12/25/2017 0:00,1/6/2018 0:00,100,495,0,1,,,,100
+Campaign Name,Type,Funding,Category,Brand,Date of Issue,Date of Expiry,Dollar Value,Total Voucher Issued,Total Voucher Used,Total Booking Value,Average Booking Value,Date Of Use,Booking Number,Booking Value,LastName,FirsName
+Doug's Voucherama,DS,33333,DS,Sunwing,6/25/2018 0:00,7/3/2018 0:00,250,4,0,1,,,,250,TestLast1,Test1
+Fall into Savings,VO,111,AB,Sunwing,10/24/2017 0:00,12/31/2017 0:00,25,62,8,547,68.38,1/1/1900 0:00,B6E95EC405E1F793ED21FBA5FC2E462968485E5DD8F41794C8AC80F50FFA0FD2,25,TestLast2,Test2
+Test Campaign,VO,12345,FI,Vacation Express,12/25/2017 0:00,1/6/2018 0:00,100,495,0,1,,,,100,TestLast3,Test3

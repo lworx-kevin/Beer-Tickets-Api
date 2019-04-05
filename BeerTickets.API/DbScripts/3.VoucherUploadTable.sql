@@ -1,7 +1,7 @@
 ﻿USE [sunwingVouchers]
 GO
 
-/****** Object:  Table [dbo].[VouchersUpload]    Script Date: 4/4/2019 3:09:01 PM ******/
+/****** Object:  Table [dbo].[VouchersUpload]    Script Date: 4/5/2019 2:48:32 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -16,7 +16,10 @@ CREATE TABLE [dbo].[VouchersUpload](
 	[CreatedBy] [varchar](50) NULL,
 	[ModefiedOn] [datetime] NULL,
 	[ModefiedBy] [varchar](50) NULL,
-	[IsDeleted] [bit] NULL,
+	[IsDeleted] [bit] NOT NULL,
+	[SuccessfullyProcessed] [int] NULL,
+	[NotSuccessfullyProcessed] [int] NULL,
+	[TotalProcessed] [int] NULL,
  CONSTRAINT [PK_VouchersUpload] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

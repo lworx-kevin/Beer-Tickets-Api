@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using BeerTicket.API.Models;
+using Microsoft.AspNet.Identity;
 using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
-namespace Issuance.API.Helper
+namespace BeerTicket.API.Helper
 {
     public class EmailService : IIdentityMessageService
     {
