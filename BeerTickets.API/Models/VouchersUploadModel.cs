@@ -2,7 +2,7 @@
 
 namespace BeerTicket.API.Models
 {
-    public class VouchersUploadModel: PayLoad
+    public class VouchersUploadModel : PayLoad
     {
         public int Id { get; set; }
         public string UploadContent { get; set; }
@@ -16,5 +16,7 @@ namespace BeerTicket.API.Models
         public Nullable<int> SuccessfullyProcessed { get; set; }
         public Nullable<int> NotSuccessfullyProcessed { get; set; }
         public Nullable<int> TotalProcessed { get; set; }
+
+        public string PayloadContent { get; set; }
     }
 }

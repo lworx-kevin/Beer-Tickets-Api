@@ -1,6 +1,7 @@
 ﻿using BeerTicket.API.DataModel;
 using BeerTicket.API.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BeerTicket.API.BusinessLayer
@@ -56,10 +57,10 @@ namespace BeerTicket.API.BusinessLayer
         /// 
         /// </summary>
         /// <returns></returns>
-        public bool IsAddNewVoucherPayloadValid(VoucherModel voucherViewModel)
+        public bool IsAddNewVoucherPayloadValid(PayLoad payLoad)
         {
             //Reject any payload that does not contain a valid token
-            if (String.IsNullOrEmpty(voucherViewModel.Token))
+            if (String.IsNullOrEmpty(payLoad.Token))
             {
                 return false;
             }
@@ -116,9 +117,7 @@ namespace BeerTicket.API.BusinessLayer
         {
             try
             {
-                #region Get Campaign Category Prefix
-                //select CC.CouponPrefix from CouponCategory CC inner join VoucherCampaign VC on VC.CategoryId = CC.Id 
-                //where VC.Id = @CampaignId
+                #region Get Campaign Category Prefix              
                 var couponPrefix = (from cc in _dbContext.CouponCategories
                                     join vc in _dbContext.VoucherCampaigns on
                                     cc.Id equals vc.CategoryId
@@ -160,7 +159,6 @@ namespace BeerTicket.API.BusinessLayer
                     if (!_dbContext.VoucherTables.Where(x => x.VoucherCode == generatedVoucher).Any())
                     {
                         newVoucherCode = generatedVoucher;
-                        //INSERT INTO VoucherTable(VoucherCode) VALUES(@NewVoucherCode)
                         VoucherTable voucherTable = new VoucherTable
                         {
                             VoucherCode = newVoucherCode
@@ -192,12 +190,10 @@ namespace BeerTicket.API.BusinessLayer
 
                 // add the added values and return back 
                 voucherViewModel.Id = voucherMaster.Id;
-                //voucherViewModel.VoucherValue = voucherMaster.VoucherValue;
                 voucherViewModel.VoucherId = voucherMaster.VoucherId;
                 voucherViewModel.IssueDate = voucherMaster.IssueDate;
                 voucherViewModel.FullName = voucherMaster.FullName;
-                //DateTime Created = DateTime.Now;
-                //DateTime IssueDate = DateTime.Now;
+
                 return true;
             }
             catch (Exception ex)
@@ -214,38 +210,38 @@ namespace BeerTicket.API.BusinessLayer
         {
             try
             {
+                VouchersUpload vouchersUpload = new VouchersUpload();
                 // update  
                 if (vouchersUploadModel.Id > 0)
                 {
-                    var processVoucher = _dbContext.VouchersUploads.Where(x => x.Id == vouchersUploadModel.Id &&
+                    vouchersUpload = _dbContext.VouchersUploads.Where(x => x.Id == vouchersUploadModel.Id &&
                     !x.IsDeleted).FirstOrDefault();
-                    if (processVoucher != null)
+                    if (vouchersUpload != null)
                     {
-                        processVoucher.Status = vouchersUploadModel.Status;
-                        processVoucher.ModefiedOn = System.DateTime.Now;
-
-
+                        vouchersUpload.UploadContent = vouchersUploadModel.UploadContent;
+                        vouchersUpload.Status = vouchersUploadModel.Status;
+                        vouchersUpload.ModefiedOn = System.DateTime.Now;
                         //number of records that parsed successfully 
-                        processVoucher.SuccessfullyProcessed = vouchersUploadModel.SuccessfullyProcessed;
-                        processVoucher.NotSuccessfullyProcessed = vouchersUploadModel.NotSuccessfullyProcessed;
-                        processVoucher.TotalProcessed = vouchersUploadModel.TotalProcessed;
-                        _dbContext.SaveChanges();
+                        vouchersUpload.SuccessfullyProcessed = vouchersUploadModel.SuccessfullyProcessed;
+                        vouchersUpload.NotSuccessfullyProcessed = vouchersUploadModel.NotSuccessfullyProcessed;
+                        vouchersUpload.TotalProcessed = vouchersUploadModel.TotalProcessed;
                     }
-
                 }
                 else // add
                 {
-                    VouchersUpload vouchersUpload = new VouchersUpload()
-                    {
-                        UploadContent = vouchersUploadModel.UploadContent,
-                        Status = vouchersUploadModel.Status,
-                        CreatedOn = vouchersUploadModel.CreatedOn
-                    };
+                    // UploadContent = vouchersUploadModel.UploadContent,
+                    vouchersUpload.Status = vouchersUploadModel.Status;
+                    vouchersUpload.CreatedOn = vouchersUploadModel.CreatedOn;
+                    vouchersUpload.PayloadContent = vouchersUploadModel.PayloadContent;
+                    vouchersUpload.CsvString = vouchersUploadModel.CsvString;
+                    //Base= vouchersUploadModel.Base64Content
                     _dbContext.VouchersUploads.Add(vouchersUpload);
-                    _dbContext.SaveChanges();
-                    // return this 
-                    vouchersUploadModel.Id = vouchersUpload.Id;
+
+
                 }
+                _dbContext.SaveChanges();
+                // return this 
+                vouchersUploadModel.Id = vouchersUpload.Id;
                 return true;
             }
             catch (Exception ex)
@@ -272,6 +268,7 @@ namespace BeerTicket.API.BusinessLayer
                         processVoucher.ErrorMsg = processVouchersUploadModel.ErrorMsg;
                         processVoucher.Status = processVouchersUploadModel.Status;
                         processVoucher.ModefiedOn = System.DateTime.Now;
+                        processVoucher.CsvContent = processVouchersUploadModel.CsvContent;//System.DateTime.Now;
                     }
                 }
                 else
@@ -283,13 +280,15 @@ namespace BeerTicket.API.BusinessLayer
                         Status = processVouchersUploadModel.Status,
                         CreatedOn = DateTime.Now,
                         ErrorMsg = processVouchersUploadModel.ErrorMsg,
-
+                        CsvContent = processVouchersUploadModel.CsvContent
                     };
                     //
                     _dbContext.ProcessVouchersUploads.Add(processVouchersUpload);
-                    _dbContext.SaveChanges();
                     processVouchersUploadModel.Id = processVouchersUpload.Id;
                 }
+
+
+                _dbContext.SaveChanges();
                 return true;
             }
             catch (Exception ex)
@@ -297,6 +296,26 @@ namespace BeerTicket.API.BusinessLayer
                 return false;
             }
         }
+        /// <summary>
+        /// Get Uploaded data by status 
+        /// </summary>
+        /// <returns></returns>
+        public List<VouchersUploadModel> GetUploadByStatus(int status)
+        {
+            return (from unprocessed in _dbContext.VouchersUploads
+                    where unprocessed.IsDeleted == false && unprocessed.Status == status
+                    select new VouchersUploadModel
+                    {
+                        Id = unprocessed.Id,
+                        UploadContent = unprocessed.UploadContent,
+                        Status = unprocessed.Status,
+                        CreatedOn = unprocessed.CreatedOn,
+                        CsvString = unprocessed.CsvString
+
+
+                    }).ToList();
+        }
+
         #endregion
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SunwingVouchersModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SunwingVouchersModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
 warning 6002: The table/view 'sunwingVouchers.dbo.API_Auth' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="API_Auth">
@@ -119,15 +119,6 @@ warning 6002: The table/view 'sunwingVouchers.dbo.API_Auth' does not have a prim
           <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'sunwingVouchers.dbo.audit' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="audit">
-          <Property Name="timestamp" Type="datetime" />
-          <Property Name="user" Type="int" />
-          <Property Name="function" Type="varchar" MaxLength="50" />
-          <Property Name="text" Type="ntext" />
-          <Property Name="Status" Type="varchar(max)" />
-        </EntityType>-->
         <EntityType Name="AuthLog">
           <Key>
             <PropertyRef Name="Id" />
@@ -585,6 +576,7 @@ warning 6002: The table/view 'sunwingVouchers.dbo.portal_userpanel_APIUsers' doe
           <Property Name="ModefiedOn" Type="datetime" />
           <Property Name="ModefiedBy" Type="varchar" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CsvContent" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="token_generate">
           <Key>
@@ -1090,6 +1082,8 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <Property Name="SuccessfullyProcessed" Type="int" />
           <Property Name="NotSuccessfullyProcessed" Type="int" />
           <Property Name="TotalProcessed" Type="int" />
+          <Property Name="PayloadContent" Type="varchar(max)" />
+          <Property Name="CsvString" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="VoucherTable">
           <Key>
@@ -1428,8 +1422,7 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
             <End Role="ProcessVouchersUpload" EntitySet="ProcessVouchersUpload" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SunwingVouchersModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1885,6 +1878,7 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <Property Name="ModefiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="VouchersUpload" Relationship="Self.FK_ProcessVouchersUpload_VouchersUpload" FromRole="ProcessVouchersUpload" ToRole="VouchersUpload" />
+          <Property Name="CsvContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="token_generate">
           <Key>
@@ -2362,6 +2356,8 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <Property Name="NotSuccessfullyProcessed" Type="Int32" />
           <Property Name="TotalProcessed" Type="Int32" />
           <NavigationProperty Name="ProcessVouchersUploads" Relationship="Self.FK_ProcessVouchersUpload_VouchersUpload" FromRole="VouchersUpload" ToRole="ProcessVouchersUpload" />
+          <Property Name="PayloadContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CsvString" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="VoucherTable">
           <Key>
@@ -3162,6 +3158,7 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <EntitySetMapping Name="ProcessVouchersUploads">
             <EntityTypeMapping TypeName="SunwingVouchersModel.ProcessVouchersUpload">
               <MappingFragment StoreEntitySet="ProcessVouchersUpload">
+                <ScalarProperty Name="CsvContent" ColumnName="CsvContent" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UploadId" ColumnName="UploadId" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
@@ -3655,6 +3652,8 @@ warning 6002: The table/view 'sunwingVouchers.dbo.VoucherMasterBckup' does not h
           <EntitySetMapping Name="VouchersUploads">
             <EntityTypeMapping TypeName="SunwingVouchersModel.VouchersUpload">
               <MappingFragment StoreEntitySet="VouchersUpload">
+                <ScalarProperty Name="CsvString" ColumnName="CsvString" />
+                <ScalarProperty Name="PayloadContent" ColumnName="PayloadContent" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UploadContent" ColumnName="UploadContent" />
                 <ScalarProperty Name="Status" ColumnName="Status" />

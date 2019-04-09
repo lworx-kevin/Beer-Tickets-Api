@@ -39,6 +39,22 @@ namespace BeerTicket.API.Models
         /// </summary>
         public static readonly string EmailPassword = GetValue<string>("EmailPassword");
         /// <summary>
+        ///     Retrieves the entry value for the following composed key: "config:EmailPassword" as a string.
+        /// </summary>
+        public static readonly string UploadCsvPath = GetValue<string>("UploadCsvPath");
+        /// <summary>
+        ///     Retrieves the entry value for the following composed key: "config:EmailPassword" as a string.
+        /// </summary>
+        public static readonly string RelativeCsvPath = GetValue<string>("RelativeCsvPath");
+
+
+        /// <summary>
+        ///     Retrieves the entry value for the following composed key: "config:EmailPassword" as a string.
+        /// </summary>
+        public static readonly string AdminEmail = GetValue<string>("AdminEmail");
+
+        
+        /// <summary>
         ///     Gets the entry for the given key and prefix and retrieves its value as the specified type.
         ///     <para>If no prefix is specified the default prefix value ("config") will be used.</para>
         ///     <para>

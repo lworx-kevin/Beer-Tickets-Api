@@ -31,6 +31,8 @@ namespace BeerTicket.API.DataModel
         public Nullable<int> SuccessfullyProcessed { get; set; }
         public Nullable<int> NotSuccessfullyProcessed { get; set; }
         public Nullable<int> TotalProcessed { get; set; }
+        public string PayloadContent { get; set; }
+        public string CsvString { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProcessVouchersUpload> ProcessVouchersUploads { get; set; }

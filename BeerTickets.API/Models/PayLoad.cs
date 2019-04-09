@@ -14,6 +14,6 @@
         public bool IsFirstRowAsColumnNames { get; set; }
 
         // for Content for bulk upload 
-        public string base64Content { get; set; }
+        public string CsvString { get; set; }
     }
 }

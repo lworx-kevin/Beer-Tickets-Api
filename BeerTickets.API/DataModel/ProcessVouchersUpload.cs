@@ -25,6 +25,7 @@ namespace BeerTicket.API.DataModel
         public Nullable<System.DateTime> ModefiedOn { get; set; }
         public string ModefiedBy { get; set; }
         public bool IsDeleted { get; set; }
+        public string CsvContent { get; set; }
     
         public virtual VouchersUpload VouchersUpload { get; set; }
     }

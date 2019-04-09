@@ -15,5 +15,7 @@ namespace BeerTicket.API.Models
         public Nullable<System.DateTime> ModefiedOn { get; set; }
         public string ModefiedBy { get; set; }
         public bool IsDeleted { get; set; }
+
+        public string CsvContent { get; set; }
     }
 }
